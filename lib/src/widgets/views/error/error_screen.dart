@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class ErrorScreen extends StatelessWidget {
   final String message;
-  ErrorScreen({Key key, @required this.message}) : super(key: key);
+  ErrorScreen({Key? key, required this.message}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

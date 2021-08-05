@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 
 class Header extends StatelessWidget {
   final String text;
-  const Header(this.text, {Key key}) : super(key: key);
+  final Color? color;
+  const Header(this.text, {Key? key, this.color}) : super(key: key);
 
   Widget build(BuildContext context) {
     return Container(
@@ -14,13 +15,13 @@ class Header extends StatelessWidget {
           padding: EdgeInsets.only(top: 10.0, left: 10.0),
           child: Text(text,
               style: TextStyle(
-                color: Pallete.fontColor,
+                color: this.color ?? Pallete.overSurface,
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
               )),
         ),
         Divider(
-          color: Pallete.chartLine,
+          color: Pallete.overBackground,
         )
       ],
     ));

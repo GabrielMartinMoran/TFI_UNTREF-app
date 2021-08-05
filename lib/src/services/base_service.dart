@@ -1,16 +1,22 @@
+import 'dart:convert';
+import 'package:app/src/configs/env.dart';
+import 'package:app/src/services/auth_service.dart';
 import 'package:app/src/utils/platform_checker.dart';
 import 'package:http/http.dart' as http;
 
 class BaseService {
-  String apiURL = 'http://10.0.2.2:5000';
+  final AuthService _authService = new AuthService();
 
-  BaseService() {
-    if (PlatformChecker.isWeb()) {
-      apiURL = 'http://localhost:5000';
+  Future<http.Response> get(String route, {bool authRequired = false}) async {
+    Map<String, String> headers = {};
+    if (authRequired) {
+      headers['Authorization'] = 'Bearer ${this._authService.token}';
     }
+    return await http.get(Uri.parse('${Env.apiUrl}$route'), headers: headers);
   }
 
-  Future<http.Response> get(String route) async {
-    return await http.get(Uri.parse('$apiURL$route'));
+  Future<http.Response> post(String route, Map<dynamic, dynamic>? body) async {
+    return await http.post(Uri.parse('${Env.apiUrl}$route'),
+        body: json.encode(body), headers: {"Content-Type": "application/json"});
   }
 }

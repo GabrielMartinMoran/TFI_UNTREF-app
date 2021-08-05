@@ -1,11 +1,11 @@
 import 'package:app/src/models/route_state.dart';
 
 class RouteResult {
-  List<String> pathSegments;
+  late List<String> pathSegments;
 
   RouteResult(this.pathSegments);
 
-  RouteResult.fromURI(String uri) {
+  RouteResult.fromURI(String? uri) {
     if (uri == null) {
       pathSegments = [];
       return;
@@ -75,7 +75,7 @@ class RouteResult {
       '<int>': int.parse,
       '<double>': double.parse
     };
-    if (parsers.containsKey(paramType)) return parsers[paramType](value);
+    if (parsers.containsKey(paramType)) return parsers[paramType]!(value);
     throw 'El parametro ingresado no posee un tipo valido que pueda ser interpretado';
   }
 

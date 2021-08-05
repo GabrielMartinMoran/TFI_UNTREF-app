@@ -1,31 +1,31 @@
-import 'package:app/src/models/measurement.dart';
+import 'package:app/src/models/measure.dart';
 
 class Device {
-  String bleId;
-  List<Measurement> measurements;
+  String id;
+  List<Measure> measures;
   String name;
   bool active;
   bool turnedOn;
 
   Device({
-    this.bleId,
-    this.measurements,
-    this.name,
-    this.active,
-    this.turnedOn,
+    required this.id,
+    required this.measures,
+    required this.name,
+    required this.active,
+    required this.turnedOn,
   });
 
   factory Device.fromJson(Map<String, dynamic> json) => Device(
-        bleId: json["bleId"],
-        measurements: List<Measurement>.from(
-            json["measures"].map((x) => Measurement.fromJson(x))),
+        id: json["id"],
+        measures: List<Measure>.from(
+            json["measures"].map((x) => Measure.fromJson(x))),
         name: json["name"],
         active: json["active"],
-        turnedOn: json["turnedOn"],
+        turnedOn: json["turned_on"],
       );
 
-  List<Measurement> getLasBunchOfTime(double lastSeconds) {
-    final filtered = measurements
+  List<Measure> getLasBunchOfTime(double lastSeconds) {
+    final filtered = measures
         .where((x) =>
             DateTime.now().difference(x.datetime).inSeconds <= lastSeconds)
         .toList();

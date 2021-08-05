@@ -4,9 +4,8 @@ import 'package:flutter/material.dart';
 class MenuItem extends StatelessWidget {
   final String text;
   final IconData icon;
-  final Function onTap;
-  const MenuItem(
-      {Key key, @required this.text, @required this.icon, this.onTap})
+  final VoidCallback? onTap;
+  const MenuItem({Key? key, required this.text, required this.icon, this.onTap})
       : super(key: key);
 
   @override
@@ -21,14 +20,14 @@ class MenuItem extends StatelessWidget {
           children: [
             Icon(
               icon,
-              color: Pallete.fontColor,
+              color: Pallete.overSurface,
             ),
             SizedBox(
               width: 10,
             ),
             Text(
               text,
-              style: TextStyle(color: Pallete.fontColor, fontSize: 20),
+              style: TextStyle(color: Pallete.overSurface, fontSize: 20),
             ),
           ],
         ),

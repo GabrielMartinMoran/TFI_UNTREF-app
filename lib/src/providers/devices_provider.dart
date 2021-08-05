@@ -6,12 +6,12 @@ import 'package:flutter/material.dart';
 
 class DevicesProvider with ChangeNotifier {
   List<Device> _devices = [];
-  DevicesService service;
-  Timer timer;
+  late DevicesService service;
+  late Timer timer;
 
   DevicesProvider() {
     service = new DevicesService();
-    _getData();
+    _getUserDevices();
     _setupPeriodicDataGetter();
   }
 
@@ -24,15 +24,13 @@ class DevicesProvider with ChangeNotifier {
 
   void _setupPeriodicDataGetter() {
     const delay = const Duration(seconds: 20);
-    timer = Timer.periodic(delay, (Timer t) => _getData());
+    timer = Timer.periodic(delay, (Timer t) => _getUserDevices());
   }
 
-  void _getData() {
-    try {
-      service.getDevicesData().then((res) => devices = res);
-    } catch (e) {
+  void _getUserDevices() {
+    service.getDevices().then((res) => devices = res).catchError((error) {
       print(
-          'Ha ocurrido un error al tratar de obtener datos de los dispositivos: $e');
-    }
+          'Ha ocurrido un error al tratar de obtener los dispositivos del usuario: $error');
+    });
   }
 }

@@ -1,6 +1,7 @@
 import 'package:app/src/configs/pallete.dart';
 import 'package:app/src/models/device.dart';
 import 'package:app/src/providers/router_provider.dart';
+import 'package:app/src/widgets/ui/floating_container.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
@@ -8,18 +9,15 @@ import 'package:provider/provider.dart';
 class DeviceListItem extends StatelessWidget {
   final Device device;
 
-  const DeviceListItem(this.device, {Key key}) : super(key: key);
+  const DeviceListItem(this.device, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final routerProvider = Provider.of<RouterProvider>(context);
-    return TextButton(
-      onPressed: () =>
-          routerProvider.navigateTo('/devices/view/${device.bleId}'),
-      child: Container(
-        padding: EdgeInsets.all(5.0),
-        decoration: BoxDecoration(
-            color: Pallete.container, borderRadius: BorderRadius.circular(5.0)),
+    return FloatingContainer(
+      child: TextButton(
+        onPressed: () =>
+            routerProvider.navigateTo('/devices/view/${device.id}'),
         child: Row(
           children: [
             Expanded(
@@ -27,13 +25,13 @@ class DeviceListItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(device.name,
-                        style:
-                            TextStyle(fontSize: 20, color: Pallete.fontColor)),
+                        style: TextStyle(
+                            fontSize: 20, color: Pallete.overSurface)),
                     SizedBox(height: 2.5),
                     Row(children: [
-                      Text(device.bleId,
+                      Text(device.id,
                           style: TextStyle(
-                              fontSize: 12, color: Pallete.chartText)),
+                              fontSize: 12, color: Pallete.overSurface)),
                       Expanded(child: SizedBox()),
                       _deviceStatus()
                     ])

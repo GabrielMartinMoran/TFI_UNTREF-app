@@ -5,7 +5,7 @@ class RouterInformationParser extends RouteInformationParser<RouteState> {
   @override
   Future<RouteState> parseRouteInformation(
       RouteInformation routeInformation) async {
-    final uri = Uri.parse(routeInformation.location);
+    final uri = Uri.parse(routeInformation.location ?? '');
     return RouteState.fromURI(uri.path);
   }
 

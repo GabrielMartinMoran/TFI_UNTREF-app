@@ -1,21 +1,23 @@
-import 'package:app/src/configs/routes.dart';
+import 'package:app/src/router/routes.dart';
 import 'package:app/src/models/route_result.dart';
 import 'package:app/src/models/route_state.dart';
 import 'package:app/src/providers/router_provider.dart';
+import 'package:app/src/services/auth_service.dart';
 import 'package:app/src/widgets/app_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AppRouterDelegate extends RouterDelegate<RouteState>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<RouteState> {
-  RouteState state;
-  List<MaterialPage> _pages;
+  RouteState? state;
+  late List<MaterialPage> _pages;
+  final AuthService _authService = new AuthService();
 
   @override
   GlobalKey<NavigatorState> get navigatorKey => GlobalKey<NavigatorState>();
 
   @override
-  RouteState get currentConfiguration {
+  RouteState? get currentConfiguration {
     return state;
   }
 
@@ -23,7 +25,18 @@ class AppRouterDelegate extends RouterDelegate<RouteState>
   Widget build(BuildContext context) {
     final routerProvider = Provider.of<RouterProvider>(context);
     routerProvider.navigateTo = navigateTo;
-    _pages = getPagesStack();
+    // If user is not logged in
+    if (!_authService.isAuthenticated()) {
+      _pages = [
+        MaterialPage(
+            key: ValueKey('login'),
+            name: 'login',
+            child: generateScreen(Routes.loginScreenGenerator()))
+      ];
+      this.setNewRoutePath(RouteState.fromURI('/login'));
+    } else {
+      _pages = getPagesStack();
+    }
     return Navigator(
       key: navigatorKey,
       pages: _pages,
@@ -45,7 +58,7 @@ class AppRouterDelegate extends RouterDelegate<RouteState>
     // Si solo tiene la home
     if (_pages.length == 1) return false;
     _pages.removeLast();
-    navigateTo(_pages.last.name);
+    navigateTo(_pages.last.name ?? '');
     return true;
   }
 
@@ -57,8 +70,8 @@ class AppRouterDelegate extends RouterDelegate<RouteState>
           child: generateScreen(Routes.homeScreenGenerator()))
     ];
     if (state == null) return pages;
-    final routed = RouteResult.fromRouteState(state);
-    if (routed == null || routed.pathSegments.length == 0) return pages;
+    final routed = RouteResult.fromRouteState(state!);
+    if (routed.pathSegments.length == 0) return pages;
 
     try {
       for (var route in Routes.routes.keys) {

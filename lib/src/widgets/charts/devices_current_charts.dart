@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class DevicesCurrentCharts extends StatefulWidget {
-  const DevicesCurrentCharts({Key key}) : super(key: key);
+  const DevicesCurrentCharts({Key? key}) : super(key: key);
 
   @override
   _DevicesCurrentChartsState createState() => _DevicesCurrentChartsState();

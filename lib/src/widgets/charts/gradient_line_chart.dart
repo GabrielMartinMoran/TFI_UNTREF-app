@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:app/src/configs/pallete.dart';
 import 'package:app/src/models/charts/chart_bounds.dart';
 import 'package:app/src/utils/date_converter.dart';
+import 'package:app/src/widgets/ui/floating_container.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -10,14 +11,14 @@ class GradientLineChart extends StatelessWidget {
   final double timeInterval;
   final List<FlSpot> dataSpots;
   final List<Color> colorGradient;
-  final String title;
-  final String unit;
-  double yAverage;
-  ChartBounds _chartBounds;
-  double _verticalInterval;
+  final String? title;
+  final String? unit;
+  late double yAverage;
+  late ChartBounds _chartBounds;
+  late double _verticalInterval;
 
   GradientLineChart(this.dataSpots, this.timeInterval, this.colorGradient,
-      {Key key, this.title, this.unit})
+      {Key? key, this.title, this.unit})
       : super(key: key) {
     _calculateInterval();
     _chartBounds = ChartBounds(dataSpots);
@@ -25,35 +26,34 @@ class GradientLineChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return FloatingContainer(
       child: Column(children: [
-        SizedBox(
-          height: 10,
-        ),
         if (title != null)
-          Text(title, style: TextStyle(fontSize: 20, color: Pallete.fontColor)),
+          Text(title ?? '',
+              style: TextStyle(fontSize: 20, color: Pallete.overSurface)),
         Padding(
-          padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
-          child:
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Text('Máximo: ${_formatLabel(_getMax())}',
-                style: TextStyle(fontSize: 15, color: Pallete.chartText)),
-            Text('Actual: ${_formatLabel(_getLast())}',
-                style: TextStyle(fontSize: 15, color: Pallete.chartText)),
-            Text('Promedio: ${_formatLabel(yAverage)}',
-                style: TextStyle(fontSize: 15, color: Pallete.chartText)),
-          ]),
+          padding: const EdgeInsets.only(top: 10.0),
+          child: Wrap(
+              spacing: 20,
+              runSpacing: 5,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              alignment: WrapAlignment.spaceEvenly,
+              children: [
+                Text('Máximo: ${_formatLabel(_getMax())}',
+                    style: TextStyle(fontSize: 15, color: Pallete.chartText)),
+                Text('Actual: ${_formatLabel(_getLast())}',
+                    style: TextStyle(fontSize: 15, color: Pallete.chartText)),
+                Text('Promedio: ${_formatLabel(yAverage)}',
+                    style: TextStyle(fontSize: 15, color: Pallete.chartText)),
+              ]),
         ),
         Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.only(top: 10.0),
           child: Container(
             height: 300,
             child: LineChart(_getLineChartData()),
           ),
         ),
-        SizedBox(
-          height: 20,
-        )
       ]),
     );
   }
@@ -81,14 +81,16 @@ class GradientLineChart extends StatelessWidget {
   String _formatLabel(double value) {
     if (value > 1000) return '${(value / 1000).toStringAsFixed(2)} K$unit';
     if (value < (1 / 100)) return '${(value * 1000).toStringAsFixed(2)} m$unit';
-    return '${value.toStringAsFixed(2)} $unit';
+    String formatted = value.toStringAsFixed(2);
+    return '${formatted == 'NaN' ? '0.00' : formatted} $unit';
   }
 
   LineChartData _getLineChartData() {
     return LineChartData(
         gridData: FlGridData(
-            verticalInterval: timeInterval > 0 ? timeInterval : 1,
-            horizontalInterval: _verticalInterval > 0 ? _verticalInterval : 1,
+            verticalInterval: timeInterval > 0 ? timeInterval : null,
+            horizontalInterval:
+                _verticalInterval > 0 ? _verticalInterval : null,
             show: true,
             drawVerticalLine: true,
             getDrawingHorizontalLine: (value) {
@@ -113,12 +115,13 @@ class GradientLineChart extends StatelessWidget {
                   fontSize: 8),
               getTitles: (value) {
                 DateTime date = DateConverter.fromTimestamp(value);
-                return '${date.hour}:${date.minute}:${date.second}';
+                final localDate = date.toLocal();
+                return '${localDate.hour.toString().padLeft(2, '0')}:${localDate.minute.toString().padLeft(2, '0')}:${localDate.second.toString().padLeft(2, '0')}';
               },
               reservedSize: 22,
               margin: 8,
               rotateAngle: 0,
-              interval: timeInterval),
+              interval: timeInterval > 0 ? timeInterval : null),
           leftTitles: SideTitles(
             showTitles: true,
             getTextStyles: (value) => TextStyle(
@@ -129,7 +132,7 @@ class GradientLineChart extends StatelessWidget {
             getTitles: (double value) => _formatLabel(value),
             reservedSize: 30,
             margin: 5,
-            interval: _verticalInterval,
+            interval: _verticalInterval > 0 ? _verticalInterval : null,
           ),
         ),
         borderData: FlBorderData(

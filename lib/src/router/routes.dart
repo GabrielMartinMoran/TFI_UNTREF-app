@@ -1,8 +1,9 @@
-import 'package:app/src/screens/devices/add_device_screen.dart';
-import 'package:app/src/screens/devices/devices_screen.dart';
-import 'package:app/src/screens/devices/view_device_screen.dart';
-import 'package:app/src/screens/error_screen.dart';
-import 'package:app/src/screens/home_screen.dart';
+import 'package:app/src/widgets/views/devices/add_device/add_device_screen.dart';
+import 'package:app/src/widgets/views/devices/devices_list/devices_screen.dart';
+import 'package:app/src/widgets/views/devices/view_device/view_device_screen.dart';
+import 'package:app/src/widgets/views/error/error_screen.dart';
+import 'package:app/src/widgets/views/home/home_screen.dart';
+import 'package:app/src/widgets/views/login/login_screen.dart';
 import 'package:flutter/material.dart';
 
 class Routes {
@@ -10,6 +11,8 @@ class Routes {
 
   static final errorScreenGenerator =
       (message) => ErrorScreen(message: message);
+
+  static final loginScreenGenerator = () => LoginScreen();
 
   /* 
     ¡¡¡IMPORTANTE!!!
@@ -19,6 +22,7 @@ class Routes {
         Ejemplo de error: '/route1_part1/<int>/route1_part2'
   */
   static final Map routes = {
+    '/login': () => LoginScreen(),
     '/devices': () => DevicesScreen(),
     '/devices/add': () => AddDeviceScreen(),
     '/devices/view/<string>': (List<dynamic> args) =>

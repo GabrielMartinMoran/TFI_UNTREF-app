@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 class AppMenu extends StatefulWidget {
   final Function navigateTo;
-  const AppMenu({Key key, this.navigateTo}) : super(key: key);
+  const AppMenu({Key? key, required this.navigateTo}) : super(key: key);
 
   @override
   _AppMenuState createState() => _AppMenuState(navigateTo);
@@ -24,7 +24,7 @@ class _AppMenuState extends State<AppMenu> {
     return SafeArea(
       child: Drawer(
         child: Container(
-          color: Pallete.container,
+          color: Pallete.surface,
           child: Column(
             children: [
               SizedBox(
