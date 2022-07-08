@@ -4,7 +4,7 @@ import { ApiRepository } from "./api-repository";
 export class AuthRepository extends ApiRepository {
 
     public async login(email: string, password: string): Promise<any> {
-        const response = await this.post('/auth/login', { email, password });
+        const response = await this.postRequest('/auth/login', { email, password });
         await AsyncStorage.setItem('token', response.token);
     }
 
