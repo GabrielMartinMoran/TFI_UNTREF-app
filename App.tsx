@@ -1,23 +1,22 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { View, StyleSheet, StatusBar } from 'react-native';
 import { AppContext } from './src/app-context';
 import { Router } from './src/components/Router';
 
 export default function App() {
-
     const appContext = new AppContext();
 
-
     return (
-        <Router appContext={appContext}/>
+        <View style={styles.app}>
+            <StatusBar />
+            <Router appContext={appContext} />
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
+    app: {
         backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
+        margin: '0.5rem',
     },
 });

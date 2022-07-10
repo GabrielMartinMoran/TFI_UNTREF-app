@@ -8,6 +8,7 @@ import { MyDevicesView } from './views/MyDevicesView';
 import { DeviceView } from './views/DeviceView';
 import { SchedulerView } from './views/SchedulerView';
 import { RegisterView } from './views/RegisterView ';
+import { EditTaskView } from './views/EditTaskView';
 
 export type RouterProps = {
     appContext: AppContext
@@ -25,6 +26,7 @@ export const Router: React.FC<RouterProps> = ({ appContext }) => {
                 <Route path='/devices' element={<MyDevicesView appContext={appContext} />} />
                 <Route path='/devices/:deviceId' element={<DeviceView appContext={appContext} />} />
                 <Route path='/devices/:deviceId/scheduler' element={<SchedulerView appContext={appContext} />} />
+                <Route path='/devices/:deviceId/scheduler/task' element={<EditTaskView appContext={appContext} />} />
 
 
                 <Route path='*' element={<HomeView appContext={appContext} />} />

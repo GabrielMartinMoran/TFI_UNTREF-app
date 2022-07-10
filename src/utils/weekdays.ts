@@ -18,4 +18,8 @@ export class Weekdays {
     public static map(value: number): string {
         return this.WEEKDAYS_MAPPING[value];
     }
+
+    public static mapShort(value: number): string {
+        return this.WEEKDAYS_MAPPING[value][0];
+    }
 }

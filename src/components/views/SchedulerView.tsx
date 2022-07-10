@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { Button, View } from 'react-native';
 import { AppContext } from '../../app-context';
 import { Device } from '../../models/device';
 import { Task } from '../../models/scheduling/task';
 import { SchedulerRepository } from '../../repositories/scheduler-repository';
-import { DailyTask } from '../../models/scheduling/daily-task';
-import { DailyTaskComponent } from '../scheduling/DailyTaskComponent';
-import { TaskComponent } from '../scheduling/TaskComponent';
+import { TaskList } from '../scheduling/TaskList';
+import { useNavigate, useParams } from 'react-router-native';
 
 export type SchedulerViewProps = {
     appContext: AppContext;
@@ -17,9 +16,9 @@ export const SchedulerView: React.FC<SchedulerViewProps> = ({ appContext }) => {
         SchedulerRepository
     ) as SchedulerRepository;
     const device = appContext.getSharedState('device') as Device;
+    const { deviceId } = useParams();
     const [tasks, setTasks] = useState([] as Array<Task>);
-
-    console.log('Scheduler view');
+    const navigate = useNavigate();
 
     const getTasks = async (): Promise<Task[]> => {
         try {
@@ -38,15 +37,29 @@ export const SchedulerView: React.FC<SchedulerViewProps> = ({ appContext }) => {
         obtainTasks();
     }, []);
 
+    const goToTaskEditor = () => {
+        navigate(`/devices/${deviceId}/scheduler/task`);
+    };
+
+    const handleEditTask = (task: Task) => {
+        appContext.setSharedState('tasks', tasks);
+        appContext.setSharedState('editedTaskIndex', tasks.indexOf(task));
+        goToTaskEditor();
+    };
+
+    const handleCreateTask = () => {
+        appContext.setSharedState('tasks', tasks);
+        appContext.setSharedState('editedTaskIndex', null);
+        goToTaskEditor();
+    };
+
     return (
         <View>
-            {tasks.map((task: Task, i: number) =>
-                task instanceof DailyTask ? (
-                    <DailyTaskComponent key={`task-${i}`} task={task} />
-                ) : (
-                    <TaskComponent key={`task-${i}`} task={task} />
-                )
-            )}
+            <TaskList tasks={tasks} onTaskPress={handleEditTask} />
+            <Button
+                title="Crear configuración"
+                onPress={handleCreateTask}
+            ></Button>
         </View>
     );
 };

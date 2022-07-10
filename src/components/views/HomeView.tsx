@@ -5,32 +5,35 @@ import { AppContext } from '../../app-context';
 import { AuthRepository } from '../../repositories/auth-repository';
 
 export type HomeViewProps = {
-  appContext: AppContext
+    appContext: AppContext;
 };
 
 export const HomeView: React.FC<HomeViewProps> = ({ appContext }) => {
+    const authRepository = appContext.getRepository(
+        AuthRepository
+    ) as AuthRepository;
 
-  const authRepository = appContext.getRepository(AuthRepository) as AuthRepository;
+    const navigate = useNavigate();
 
-  const navigate = useNavigate();
+    useEffect(() => {
+        const checkLogged = async () => {
+            if (!(await authRepository.isLogged())) {
+                navigate('/login');
+            }
+        };
 
-  useEffect(() => {
+        checkLogged();
+    }, []);
 
-    const checkLogged = async () => {
-      if(!await authRepository.isLogged()) {
-        navigate('/login');
-      }
-    };
-
-    checkLogged();
-  }, [])
-  
-
-  return (
-    <View>
-      <Text style={{ fontSize: 30 }}>Inicio</Text>
-      <Link to='/devices'><Text>Mis dispositivos</Text></Link>
-      <Link to='/logout'><Text>Logout</Text></Link>
-    </View>
-  );
+    return (
+        <View>
+            <Text style={{ fontSize: 30 }}>Inicio</Text>
+            <Link to="/devices">
+                <Text>Mis dispositivos</Text>
+            </Link>
+            <Link to="/logout">
+                <Text>Logout</Text>
+            </Link>
+        </View>
+    );
 };

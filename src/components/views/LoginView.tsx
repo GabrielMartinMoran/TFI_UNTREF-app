@@ -5,38 +5,46 @@ import { AppContext } from '../../app-context';
 import { AuthRepository } from '../../repositories/auth-repository';
 
 export type LoginViewProps = {
-  appContext: AppContext
+    appContext: AppContext;
 };
 
 export const LoginView: React.FC<LoginViewProps> = ({ appContext }) => {
+    const authRepository = appContext.getRepository(
+        AuthRepository
+    ) as AuthRepository;
 
-  const authRepository = appContext.getRepository(AuthRepository) as AuthRepository;
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
-  const navigate = useNavigate();
+    const login = async () => {
+        try {
+            await authRepository.login(email, password);
+            navigate('/home');
+        } catch (error: any) {
+            console.warn(error);
+        }
+    };
 
-  const login = async () => {
-    try {
-      await authRepository.login(email, password);
-      navigate('/home');
-    } catch (error: any) {
-      console.warn(error);
-    }
-  }
+    const goToRegister = () => {
+        navigate('/register');
+    };
 
-  const goToRegister = () => {
-    navigate('/register');
-  }
-
-  return (
-    <View>
-      <Text style={{ fontSize: 30 }}>Iniciar sesión</Text>
-      <TextInput placeholder='Correo electrónico' onChangeText={setEmail} />
-      <TextInput placeholder='Contraseña' secureTextEntry={true} onChangeText={setPassword} />
-      <Button title='Ingresar' onPress={() => login()} />
-      <Button title='Registrarse' onPress={() => goToRegister()} />
-    </View>
-  );
+    return (
+        <View>
+            <Text style={{ fontSize: 30 }}>Iniciar sesión</Text>
+            <TextInput
+                placeholder="Correo electrónico"
+                onChangeText={setEmail}
+            />
+            <TextInput
+                placeholder="Contraseña"
+                secureTextEntry={true}
+                onChangeText={setPassword}
+            />
+            <Button title="Ingresar" onPress={() => login()} />
+            <Button title="Registrarse" onPress={() => goToRegister()} />
+        </View>
+    );
 };

@@ -22,8 +22,9 @@ export class AppContext {
         this.sharedState.set(key, value);
     }
 
-    public getSharedState(key: string): any {
-        return this.sharedState.get(key);
+    public getSharedState(key: string): any | null {
+        if (this.sharedState.has(key)) return this.sharedState.get(key);
+        return null;
     }
 
     public deleteSharedState(key: string) {

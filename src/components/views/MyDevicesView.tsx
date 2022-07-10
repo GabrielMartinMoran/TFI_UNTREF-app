@@ -6,44 +6,49 @@ import { Device } from '../../models/device';
 import { DevicesRepository } from '../../repositories/devices-repository';
 
 export type MyDevicesViewProps = {
-  appContext: AppContext
+    appContext: AppContext;
 };
 
 export const MyDevicesView: React.FC<MyDevicesViewProps> = ({ appContext }) => {
+    const devicesRepository = appContext.getRepository(
+        DevicesRepository
+    ) as DevicesRepository;
 
-  const devicesRepository = appContext.getRepository(DevicesRepository) as DevicesRepository;
+    const [devices, setDevices] = useState([] as Array<Device>);
 
-  const [devices, setDevices] = useState([] as Array<Device>);
+    const navigate = useNavigate();
 
-  const navigate = useNavigate();
+    useEffect(() => {
+        const getDevices = async () => {
+            try {
+                setDevices(await devicesRepository.getAll());
+            } catch (error) {
+                console.log(error);
+            }
+        };
 
-  useEffect(() => {
-    const getDevices = async () => {
-      try {
-        setDevices(await devicesRepository.getAll());
-      } catch (error) {
-        console.log(error);
-      }
+        appContext.deleteSharedState('device');
+        getDevices();
+    }, []);
+
+    const goToDeviceView = (device: Device) => {
+        appContext.setSharedState('device', device);
+        navigate(`/devices/${device.deviceId}`);
     };
 
-    appContext.deleteSharedState('device');
-    getDevices();
-  }, [])
-
-  const goToDeviceView = (device: Device) => {
-    appContext.setSharedState('device', device);
-    navigate(`/devices/${device.deviceId}`);
-  }
-
-
-  return (
-    <View>
-      <Text style={{ fontSize: 30 }}>Mis dispositivos</Text>
-      {
-        devices.map((device: Device) => (<View key={device.deviceId}>
-          <Text style={{cursor: 'pointer'}} onPress={() => goToDeviceView(device)}>{device.turnedOn ? '🟡' : '⚫'} {device.name}</Text>
-        </View>))
-      }
-    </View>
-  );
+    return (
+        <View>
+            <Text style={{ fontSize: 30 }}>Mis dispositivos</Text>
+            {devices.map((device: Device) => (
+                <View key={device.deviceId}>
+                    <Text
+                        style={{ cursor: 'pointer' }}
+                        onPress={() => goToDeviceView(device)}
+                    >
+                        {device.turnedOn ? '🟡' : '⚫'} {device.name}
+                    </Text>
+                </View>
+            ))}
+        </View>
+    );
 };
