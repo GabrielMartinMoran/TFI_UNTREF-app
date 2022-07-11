@@ -11,10 +11,6 @@ export class SchedulerRepository extends ApiRepository {
     }
 
     public async update(deviceId: string, tasks: Array<Task>): Promise<any> {
-        console.log(
-            'POST Request to update scheduling tasks',
-            tasks.map((x) => x.toObject())
-        );
         await this.postRequest(
             `/scheduler/set_scheduling_tasks/${deviceId}`,
             tasks.map((x) => x.toObject())
