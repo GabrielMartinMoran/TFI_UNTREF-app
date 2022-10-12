@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Text, View, Button } from 'react-native';
 import { AppContext } from '../../app-context';
-import { SchedulerRepository } from '../../repositories/scheduler-repository';
+import { SchedulerRepository } from '../../repositories/web-api/scheduler-repository';
 import { DailyTask } from '../../models/scheduling/daily-task';
 import { Task } from '../../models/scheduling/task';
 import { Checkbox } from 'react-native-paper';

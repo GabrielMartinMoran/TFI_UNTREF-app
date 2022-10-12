@@ -4,7 +4,7 @@ import { Link, useParams } from 'react-router-native';
 import { AppContext } from '../../app-context';
 import { Device } from '../../models/device';
 import { Measure } from '../../models/measure';
-import { DevicesRepository } from '../../repositories/devices-repository';
+import { DevicesRepository } from '../../repositories/web-api/devices-repository';
 import { Chart } from '../ui/Chart';
 import { TimeRangePicker } from '../ui/TimeRangePicker';
 

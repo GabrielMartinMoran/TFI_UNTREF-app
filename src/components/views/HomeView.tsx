@@ -2,16 +2,14 @@ import React, { useEffect } from 'react';
 import { Text, View } from 'react-native';
 import { Link, useNavigate } from 'react-router-native';
 import { AppContext } from '../../app-context';
-import { AuthRepository } from '../../repositories/auth-repository';
+import { AuthRepository } from '../../repositories/web-api/auth-repository';
 
 export type HomeViewProps = {
     appContext: AppContext;
 };
 
 export const HomeView: React.FC<HomeViewProps> = ({ appContext }) => {
-    const authRepository = appContext.getRepository(
-        AuthRepository
-    ) as AuthRepository;
+    const authRepository = appContext.getRepository(AuthRepository) as AuthRepository;
 
     const navigate = useNavigate();
 

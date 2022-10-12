@@ -1,15 +1,14 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { CONFIG } from '../config';
 import { HTTPError } from '../errors/http-error';
 
-export class ApiRepository {
+export abstract class ApiRepository {
+    protected abstract getURI(): string;
 
     private async request(method: string, path: string, body: any = null): Promise<any> {
-        const url = `${CONFIG.API_URI}${path}`;
+        const url = `${this.getURI()}${path}`;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const fetchOptions: any = {
             method: method,
-            headers: await this.getHeaders()
+            headers: await this.getHeaders(),
         };
         if (body !== null) {
             fetchOptions.body = JSON.stringify(body ? body : {});
@@ -37,12 +36,6 @@ export class ApiRepository {
     protected async getHeaders(): Promise<Headers> {
         const headers = new Headers();
         headers.set('Content-Type', 'application/json');
-
-        // Authentication
-        const token = await AsyncStorage.getItem('token');
-        if (token) headers.set('Authorization', `Bearer ${token}`);
-
         return headers;
     }
-
 }

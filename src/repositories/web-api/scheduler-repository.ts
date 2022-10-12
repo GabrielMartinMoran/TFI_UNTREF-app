@@ -1,12 +1,10 @@
-import { ApiRepository } from './api-repository';
-import { TaskMapper } from '../mappers/task-mapper';
-import { Task } from '../models/scheduling/task';
+import { TaskMapper } from '../../mappers/task-mapper';
+import { Task } from '../../models/scheduling/task';
+import { WebApiRepository } from './web-api-repository';
 
-export class SchedulerRepository extends ApiRepository {
+export class SchedulerRepository extends WebApiRepository {
     public async get(deviceId: string): Promise<Array<Task>> {
-        const response = await this.getRequest(
-            `/scheduler/get_scheduling_tasks/${deviceId}`
-        );
+        const response = await this.getRequest(`/scheduler/get_scheduling_tasks/${deviceId}`);
         return response.map((x: any) => TaskMapper.map(x));
     }
 

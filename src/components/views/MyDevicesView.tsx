@@ -3,16 +3,14 @@ import { Button, Text, TextInput, View } from 'react-native';
 import { Link, useNavigate } from 'react-router-native';
 import { AppContext } from '../../app-context';
 import { Device } from '../../models/device';
-import { DevicesRepository } from '../../repositories/devices-repository';
+import { DevicesRepository } from '../../repositories/web-api/devices-repository';
 
 export type MyDevicesViewProps = {
     appContext: AppContext;
 };
 
 export const MyDevicesView: React.FC<MyDevicesViewProps> = ({ appContext }) => {
-    const devicesRepository = appContext.getRepository(
-        DevicesRepository
-    ) as DevicesRepository;
+    const devicesRepository = appContext.getRepository(DevicesRepository) as DevicesRepository;
 
     const [devices, setDevices] = useState([] as Array<Device>);
 
@@ -36,19 +34,21 @@ export const MyDevicesView: React.FC<MyDevicesViewProps> = ({ appContext }) => {
         navigate(`/devices/${device.deviceId}`);
     };
 
+    const addDevice = () => {
+        navigate('/devices/search');
+    };
+
     return (
         <View>
             <Text style={{ fontSize: 30 }}>Mis dispositivos</Text>
             {devices.map((device: Device) => (
                 <View key={device.deviceId}>
-                    <Text
-                        style={{ cursor: 'pointer' }}
-                        onPress={() => goToDeviceView(device)}
-                    >
+                    <Text style={{ cursor: 'pointer' }} onPress={() => goToDeviceView(device)}>
                         {device.turnedOn ? '🟡' : '⚫'} {device.name}
                     </Text>
                 </View>
             ))}
+            <Button title="Agregar dispositivo" onPress={() => addDevice()} />
         </View>
     );
 };

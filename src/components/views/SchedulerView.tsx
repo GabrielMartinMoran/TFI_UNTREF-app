@@ -3,7 +3,7 @@ import { Button, View } from 'react-native';
 import { AppContext } from '../../app-context';
 import { Device } from '../../models/device';
 import { Task } from '../../models/scheduling/task';
-import { SchedulerRepository } from '../../repositories/scheduler-repository';
+import { SchedulerRepository } from '../../repositories/web-api/scheduler-repository';
 import { TaskList } from '../scheduling/TaskList';
 import { useNavigate, useParams } from 'react-router-native';
 

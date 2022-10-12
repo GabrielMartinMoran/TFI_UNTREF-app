@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Text, TextInput, View } from 'react-native';
 import { useNavigate } from 'react-router-native';
 import { AppContext } from '../../app-context';
-import { AuthRepository } from '../../repositories/auth-repository';
+import { AuthRepository } from '../../repositories/web-api/auth-repository';
 
 export type LoginViewProps = {
     appContext: AppContext;

@@ -9,27 +9,35 @@ import { DeviceView } from './views/DeviceView';
 import { SchedulerView } from './views/SchedulerView';
 import { RegisterView } from './views/RegisterView ';
 import { EditTaskView } from './views/EditTaskView';
+import { SearchDeviceView } from './views/configure-device/SearchDeviceView';
+import { SearchDeviceNetworkView } from './views/configure-device/SearchDeviceNetworkView';
+import { ConfigureDeviceViewceView } from './views/configure-device/ConfigureDeviceView';
+import { ConfigureDeviceNetworkView } from './views/configure-device/ConfigureDeviceNetworkView';
 
 export type RouterProps = {
-    appContext: AppContext
+    appContext: AppContext;
 };
 
 export const Router: React.FC<RouterProps> = ({ appContext }) => {
-
     return (
         <NativeRouter>
             <Routes>
-                <Route path='/' element={<HomeView appContext={appContext} />} />
-                <Route path='/login' element={<LoginView appContext={appContext} />} />
-                <Route path='/register' element={<RegisterView />} />
-                <Route path='/logout' element={<LogoutView appContext={appContext} />} />
-                <Route path='/devices' element={<MyDevicesView appContext={appContext} />} />
-                <Route path='/devices/:deviceId' element={<DeviceView appContext={appContext} />} />
-                <Route path='/devices/:deviceId/scheduler' element={<SchedulerView appContext={appContext} />} />
-                <Route path='/devices/:deviceId/scheduler/task' element={<EditTaskView appContext={appContext} />} />
+                <Route path="/" element={<HomeView appContext={appContext} />} />
+                <Route path="/login" element={<LoginView appContext={appContext} />} />
+                <Route path="/register" element={<RegisterView />} />
+                <Route path="/logout" element={<LogoutView appContext={appContext} />} />
+                <Route path="/devices" element={<MyDevicesView appContext={appContext} />} />
 
+                <Route path="/devices/search" element={<SearchDeviceView appContext={appContext} />} />
+                <Route path="/devices/configure" element={<ConfigureDeviceViewceView appContext={appContext} />} />
+                <Route path="/devices/networks" element={<SearchDeviceNetworkView appContext={appContext} />} />
+                <Route path="/devices/network" element={<ConfigureDeviceNetworkView appContext={appContext} />} />
 
-                <Route path='*' element={<HomeView appContext={appContext} />} />
+                <Route path="/devices/:deviceId" element={<DeviceView appContext={appContext} />} />
+                <Route path="/devices/:deviceId/scheduler" element={<SchedulerView appContext={appContext} />} />
+                <Route path="/devices/:deviceId/scheduler/task" element={<EditTaskView appContext={appContext} />} />
+
+                <Route path="*" element={<HomeView appContext={appContext} />} />
             </Routes>
         </NativeRouter>
     );

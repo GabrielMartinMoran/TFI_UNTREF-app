@@ -1,22 +1,20 @@
-import { Repository } from "./repositories/repository";
+import { ApiRepository } from './repositories/api-repository';
 
 export class AppContext {
-
-    protected repositories: Map<any, Repository>;
+    protected repositories: Map<any, ApiRepository>;
     protected sharedState: Map<string, any>;
 
-    constructor(_repositories?: Map<any, Repository>, _sharedState?: Map<string, any>) {
-        this.repositories = !_repositories ? new Map<any, Repository>() : _repositories;
+    constructor(_repositories?: Map<any, ApiRepository>, _sharedState?: Map<string, any>) {
+        this.repositories = !_repositories ? new Map<any, ApiRepository>() : _repositories;
         this.sharedState = !_sharedState ? new Map<string, any>() : _sharedState;
     }
 
-    public getRepository(repositoryType: any): Repository {
+    public getRepository(repositoryType: any): ApiRepository {
         if (!this.repositories.has(repositoryType)) {
             this.repositories.set(repositoryType, new repositoryType());
         }
         return this.repositories.get(repositoryType)!;
     }
-
 
     public setSharedState(key: string, value: any) {
         this.sharedState.set(key, value);
@@ -30,5 +28,4 @@ export class AppContext {
     public deleteSharedState(key: string) {
         if (this.sharedState.has(key)) this.sharedState.delete(key);
     }
-
 }
