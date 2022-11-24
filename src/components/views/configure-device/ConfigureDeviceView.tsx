@@ -22,13 +22,15 @@ export const ConfigureDeviceViewceView: React.FC<ConfigureDeviceViewProps> = ({ 
     const [deviceName, setDeviceName] = useState('');
 
     const configureDevice = async () => {
-        // Generar device_id
+        // Generate device_id
         const deviceId = await devicesRepository.create(deviceName);
-        // Enviarle el device_id al dispositivo
+        // Send device_id to the device
         await deviceConfigurationRepository.setDeviceId(deviceId);
-        // Generar el token del dispositivo
-        // Enviarle el token al dispositivo
-        await deviceConfigurationRepository.setToken(await authRepository.getToken());
+        // Generate device token
+        const deviceToken = await authRepository.generateDeviceToken(deviceId);
+        // Send the token to the device
+        await deviceConfigurationRepository.setToken(deviceToken);
+        // Navigate to the next stage of the configuration
         navigate('/devices/networks');
     };
 

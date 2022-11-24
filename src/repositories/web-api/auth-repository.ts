@@ -21,4 +21,9 @@ export class AuthRepository extends WebApiRepository {
     public async getToken(): Promise<string> {
         return (await AsyncStorage.getItem('token'))!;
     }
+
+    public async generateDeviceToken(deviceId: string): Promise<string> {
+        const response = await this.getRequest(`/auth/generate_device_token/${deviceId}`);
+        return response.token;
+    }
 }
