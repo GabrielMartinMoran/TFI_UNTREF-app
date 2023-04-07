@@ -1,4 +1,4 @@
-import { Measure } from "./measure";
+import { Measure } from './measure';
 
 export class Device {
     protected _deviceId: string;
@@ -14,7 +14,6 @@ export class Device {
         this._turnedOn = turnedOn;
         this._measures = measures;
     }
-
 
     public get deviceId(): string {
         return this._deviceId;
@@ -32,10 +31,13 @@ export class Device {
         return this._turnedOn;
     }
 
+    public set turnedOn(turnedOn: boolean) {
+        this._turnedOn = turnedOn;
+    }
+
     public get measures(): Array<Measure> {
         return this._measures;
     }
-
 
     public static fromObject(obj: any): Device {
         return new Device(

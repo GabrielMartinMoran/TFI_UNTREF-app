@@ -19,4 +19,9 @@ export class DevicesRepository extends WebApiRepository {
         });
         return response.id;
     }
+
+    public async isTurnedOn(deviceId: string): Promise<boolean> {
+        const response = await this.getRequest(`/devices/get_state/${deviceId}`);
+        return response.turned_on;
+    }
 }

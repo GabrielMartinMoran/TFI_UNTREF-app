@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, Button } from 'react-native';
 import { Link, useParams } from 'react-router-native';
 import { AppContext } from '../../app-context';
 import { Device } from '../../models/device';
@@ -7,6 +7,7 @@ import { Measure } from '../../models/measure';
 import { DevicesRepository } from '../../repositories/web-api/devices-repository';
 import { Chart } from '../ui/Chart';
 import { TimeRangePicker } from '../ui/TimeRangePicker';
+import { DevicesActionsRepository } from '../../repositories/web-api/device-actions-repository';
 
 export type DeviceViewProps = {
     appContext: AppContext;
@@ -14,27 +15,36 @@ export type DeviceViewProps = {
 
 export const DeviceView: React.FC<DeviceViewProps> = ({ appContext }) => {
     const MEASURES_REQUEST_INTERVAL = 5000;
-    const devicesRepository = appContext.getRepository(
-        DevicesRepository
-    ) as DevicesRepository;
+    const DEVICE_STATE_REQUEST_INTERVAL = 1000;
+
+    const devicesRepository = appContext.getRepository(DevicesRepository) as DevicesRepository;
+    const deviceActionsRepository = appContext.getRepository(DevicesActionsRepository) as DevicesActionsRepository;
     const device = appContext.getSharedState('device') as Device;
+
     const { deviceId } = useParams();
+
+    const [deviceTurnedOn, setDeviceTurnedOn] = useState(device.turnedOn);
     const [deviceMeasures, setDeviceMeasures] = useState([] as Array<Measure>);
-    const [minutesInterval, setMinutesInterval] = useState(5);
-    const [requestInterval, setRequestInterval] = useState(
-        null as NodeJS.Timer | null
-    );
+    const [masuresRangeMinutesInterval, setMasuresRangeMinutesInterval] = useState(5);
+    const [measuresRequestTimer, setMeasuresRequestTimer] = useState(null as NodeJS.Timer | null);
+    const [deviceStateRequestTimer, setDeviceStateRequestTimer] = useState(null as NodeJS.Timer | null);
 
     const getDeviceMeasures = async (): Promise<Measure[]> => {
         try {
-            return await devicesRepository.getMeasures(
-                device.deviceId,
-                minutesInterval
-            );
+            return await devicesRepository.getMeasures(device.deviceId, masuresRangeMinutesInterval);
         } catch (error) {
             console.log(error);
         }
         return [];
+    };
+
+    const getTurnedOn = async (): Promise<boolean> => {
+        try {
+            return await devicesRepository.isTurnedOn(device.deviceId);
+        } catch (error) {
+            console.log(error);
+        }
+        return false;
     };
 
     useEffect(() => {
@@ -44,18 +54,27 @@ export const DeviceView: React.FC<DeviceViewProps> = ({ appContext }) => {
         };
 
         updateMeasures();
-        setRequestInterval(
-            setInterval(() => updateMeasures(), MEASURES_REQUEST_INTERVAL)
-        );
+        setMeasuresRequestTimer(setInterval(() => updateMeasures(), MEASURES_REQUEST_INTERVAL));
+
+        const updateDeviceState = async () => {
+            const isTurnedOn = await getTurnedOn();
+            device.turnedOn = isTurnedOn;
+            setDeviceTurnedOn(isTurnedOn);
+        };
+
+        updateDeviceState();
+        setDeviceStateRequestTimer(setInterval(() => updateDeviceState(), DEVICE_STATE_REQUEST_INTERVAL));
 
         return () => {
-            clearInterval(requestInterval as NodeJS.Timer);
-            setRequestInterval(null);
+            clearInterval(measuresRequestTimer as NodeJS.Timer);
+            clearInterval(deviceStateRequestTimer as NodeJS.Timer);
+            setMeasuresRequestTimer(null);
+            setDeviceStateRequestTimer(null);
         };
     }, []);
 
     const handleRangePickerChange = async (range: number) => {
-        setMinutesInterval(range);
+        setMasuresRangeMinutesInterval(range);
         const measures = await getDeviceMeasures();
         setDeviceMeasures(measures);
     };
@@ -73,11 +92,21 @@ export const DeviceView: React.FC<DeviceViewProps> = ({ appContext }) => {
         return `${date.getHours()}:${date.getMinutes()}`;
     };
 
+    const toggleDeviceState = async () => {
+        try {
+            const newState = !device.turnedOn;
+            await deviceActionsRepository.sendStateAction(device.deviceId, newState);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     return (
         <View>
             <Text style={{ fontSize: 30 }}>
-                {device.turnedOn ? '🟡' : '⚫'} {device.name}
+                {deviceTurnedOn ? '🟡' : '⚫'} {device.name}
             </Text>
+            <Button title={deviceTurnedOn ? 'Apagar' : 'Encender'} onPress={() => toggleDeviceState()} />
             <Link to={`/devices/${deviceId}/scheduler`}>
                 <Text>📆 Scheduler</Text>
             </Link>
@@ -90,12 +119,8 @@ export const DeviceView: React.FC<DeviceViewProps> = ({ appContext }) => {
                 }))}
                 xDataKey="time"
                 yDataKey="voltage"
-                min={calculateChartMin(
-                    deviceMeasures.map((measure: Measure) => measure.voltage)
-                )}
-                max={calculateChartMax(
-                    deviceMeasures.map((measure: Measure) => measure.voltage)
-                )}
+                min={calculateChartMin(deviceMeasures.map((measure: Measure) => measure.voltage))}
+                max={calculateChartMax(deviceMeasures.map((measure: Measure) => measure.voltage))}
                 unit="V"
                 lineColor="#f5d742"
             />
@@ -107,12 +132,8 @@ export const DeviceView: React.FC<DeviceViewProps> = ({ appContext }) => {
                 }))}
                 xDataKey="time"
                 yDataKey="current"
-                min={calculateChartMin(
-                    deviceMeasures.map((measure: Measure) => measure.current)
-                )}
-                max={calculateChartMax(
-                    deviceMeasures.map((measure: Measure) => measure.current)
-                )}
+                min={calculateChartMin(deviceMeasures.map((measure: Measure) => measure.current))}
+                max={calculateChartMax(deviceMeasures.map((measure: Measure) => measure.current))}
                 unit="A"
                 lineColor="#4287f5"
             />
@@ -124,12 +145,8 @@ export const DeviceView: React.FC<DeviceViewProps> = ({ appContext }) => {
                 }))}
                 xDataKey="time"
                 yDataKey="power"
-                min={calculateChartMin(
-                    deviceMeasures.map((measure: Measure) => measure.power)
-                )}
-                max={calculateChartMax(
-                    deviceMeasures.map((measure: Measure) => measure.power)
-                )}
+                min={calculateChartMin(deviceMeasures.map((measure: Measure) => measure.power))}
+                max={calculateChartMax(deviceMeasures.map((measure: Measure) => measure.power))}
                 unit="W"
                 lineColor="#f54242"
             />
