@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Button, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { DailyTask } from '../../models/scheduling/daily-task';
 import { TimePickerModal } from 'react-native-paper-dates';
 import { WeekdaysPicker } from '../ui/WeekdaysPicker';
 import { Weekdays } from '../../utils/weekdays';
 import { TaskActionPicker } from '../ui/TaskActionPicker';
+import { Button } from '../ui/Button';
 
 export type EditDailyTaskProps = {
     initialValue: DailyTask;

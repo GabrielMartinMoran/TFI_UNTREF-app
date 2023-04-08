@@ -1,0 +1,9 @@
+export const PALLETE = {
+    DARK_PRIMARY: '#689F38',
+    LIGHT_PRIMARY: '#DCEDC8',
+    PRIMARY: '#8BC34A',
+    PRIMARY_TEXT: '#212121',
+    SECONDARY_TEXT: '#757575',
+    ACCENT: '#FFC107',
+    DIVIDER: '#BDBDBD'
+};

@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
-import { Button, Text, TextInput, View } from 'react-native';
+import { Text, TextInput, View } from 'react-native';
 import { useNavigate } from 'react-router-native';
 import { AppContext } from '../../app-context';
 import { AuthRepository } from '../../repositories/web-api/auth-repository';
+import { Button } from '../ui/Button';
 
 export type LoginViewProps = {
     appContext: AppContext;
 };
 
 export const LoginView: React.FC<LoginViewProps> = ({ appContext }) => {
-    const authRepository = appContext.getRepository(
-        AuthRepository
-    ) as AuthRepository;
+    const authRepository = appContext.getRepository(AuthRepository) as AuthRepository;
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -34,15 +33,8 @@ export const LoginView: React.FC<LoginViewProps> = ({ appContext }) => {
     return (
         <View>
             <Text style={{ fontSize: 30 }}>Iniciar sesión</Text>
-            <TextInput
-                placeholder="Correo electrónico"
-                onChangeText={setEmail}
-            />
-            <TextInput
-                placeholder="Contraseña"
-                secureTextEntry={true}
-                onChangeText={setPassword}
-            />
+            <TextInput placeholder="Correo electrónico" onChangeText={setEmail} />
+            <TextInput placeholder="Contraseña" secureTextEntry={true} onChangeText={setPassword} />
             <Button title="Ingresar" onPress={() => login()} />
             <Button title="Registrarse" onPress={() => goToRegister()} />
         </View>

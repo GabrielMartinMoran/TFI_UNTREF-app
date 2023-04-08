@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Button, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { DatePickerModal, TimePickerModal } from 'react-native-paper-dates';
 import { Task } from '../../models/scheduling/task';
 import { TaskActionPicker } from '../ui/TaskActionPicker';
+import { Button } from '../ui/Button';
 
 export type EditTaskProps = {
     initialValue: Task;

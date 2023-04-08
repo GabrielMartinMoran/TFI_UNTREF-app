@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Button, Text, TextInput, View } from 'react-native';
+import { Text, TextInput, View } from 'react-native';
 import { useNavigate } from 'react-router-native';
 import { AppContext } from '../../../app-context';
 import { DeviceConfigurationRepository } from '../../../repositories/device-api/device-configuration-repository';
+import { Button } from '../../ui/Button';
 
 export type ConfigureDeviceNetworkViewProps = {
     appContext: AppContext;

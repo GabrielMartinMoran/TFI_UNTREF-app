@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { Button } from '../ui/Button';
 
 export type RegisterViewProps = {
 };

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Text, TextInput, View } from 'react-native';
+import { Text, TextInput, View } from 'react-native';
 import { Link, useNavigate } from 'react-router-native';
 import { AppContext } from '../../app-context';
 import { Device } from '../../models/device';
 import { DevicesRepository } from '../../repositories/web-api/devices-repository';
 import { MeasuresChart } from '../charts/MeasuresChart';
+import { Button } from '../ui/Button';
 
 export type MyDevicesViewProps = {
     appContext: AppContext;

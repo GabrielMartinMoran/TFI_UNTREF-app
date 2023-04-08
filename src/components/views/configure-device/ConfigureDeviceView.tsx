@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Text, TextInput, View } from 'react-native';
+import React, { useState } from 'react';
+import { Text, TextInput, View } from 'react-native';
 import { useNavigate } from 'react-router-native';
 import { AppContext } from '../../../app-context';
 import { DeviceConfigurationRepository } from '../../../repositories/device-api/device-configuration-repository';
 import { AuthRepository } from '../../../repositories/web-api/auth-repository';
 import { DevicesRepository } from '../../../repositories/web-api/devices-repository';
+import { Button } from '../../ui/Button';
 
 export type ConfigureDeviceViewProps = {
     appContext: AppContext;

@@ -3,6 +3,7 @@ import { Text, View } from 'react-native';
 import { Link, useNavigate } from 'react-router-native';
 import { AppContext } from '../../app-context';
 import { AuthRepository } from '../../repositories/web-api/auth-repository';
+import { Button, ButtonType } from '../ui/Button';
 
 export type HomeViewProps = {
     appContext: AppContext;
@@ -32,6 +33,8 @@ export const HomeView: React.FC<HomeViewProps> = ({ appContext }) => {
             <Link to="/logout">
                 <Text>Logout</Text>
             </Link>
+            <Button title="Primary" onPress={() => {}} type={ButtonType.PRIMARY} />
+            <Button title="Accent" onPress={() => {}} type={ButtonType.ACCENT} />
         </View>
     );
 };
