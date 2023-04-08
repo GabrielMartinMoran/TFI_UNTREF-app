@@ -1,39 +1,20 @@
 import React, { useState } from 'react';
 import { Text, TouchableHighlight, View } from 'react-native';
+import { CONFIG } from '../../config';
 export type TimeRangePickerProps = {
     onChange: (minutesRange: number) => void;
 };
 
 const ranges = [
-    {
-        minutes: 5,
-        display: '5 min',
-    },
-    {
-        minutes: 30,
-        display: '30 min',
-    },
-    {
-        minutes: 60,
-        display: '1 hora',
-    },
-    {
-        minutes: 60 * 24,
-        display: '1 día',
-    },
-    {
-        minutes: 60 * 24 * 15,
-        display: '15 días',
-    },
-    {
-        minutes: 60 * 24 * 30,
-        display: '30 días',
-    },
+    CONFIG.TIME_RANGES['5_MINUTES'],
+    CONFIG.TIME_RANGES['30_MINUTES'],
+    CONFIG.TIME_RANGES['1_HOUR'],
+    CONFIG.TIME_RANGES['1_DAY'],
+    CONFIG.TIME_RANGES['15_DAYS'],
+    CONFIG.TIME_RANGES['30_DAYS'],
 ];
 
-export const TimeRangePicker: React.FC<TimeRangePickerProps> = ({
-    onChange,
-}) => {
+export const TimeRangePicker: React.FC<TimeRangePickerProps> = ({ onChange }) => {
     const [range, setRange] = useState(ranges[0]);
 
     const renderRanges = () => {

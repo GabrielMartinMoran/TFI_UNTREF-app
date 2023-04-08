@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-native';
 import { AppContext } from '../../app-context';
 import { Device } from '../../models/device';
 import { DevicesRepository } from '../../repositories/web-api/devices-repository';
+import { MeasuresChart } from '../charts/MeasuresChart';
 
 export type MyDevicesViewProps = {
     appContext: AppContext;
@@ -49,6 +50,8 @@ export const MyDevicesView: React.FC<MyDevicesViewProps> = ({ appContext }) => {
                 </View>
             ))}
             <Button title="Agregar dispositivo" onPress={() => addDevice()} />
+            <Text>Consumo de mis dispositivos</Text>
+            <MeasuresChart appContext={appContext} />
         </View>
     );
 };

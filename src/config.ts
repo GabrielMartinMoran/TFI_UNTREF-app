@@ -1,4 +1,30 @@
 export const CONFIG = {
     API_URI: 'http://localhost:5000/api',
     DEVICE_API_URI: 'http://localhost:5001/api',
+    TIME_RANGES: {
+        '5_MINUTES': {
+            minutes: 5,
+            display: '5 min',
+        },
+        '30_MINUTES': {
+            minutes: 30,
+            display: '30 min',
+        },
+        '1_HOUR': {
+            minutes: 60,
+            display: '1 hora',
+        },
+        '1_DAY': {
+            minutes: 60 * 24,
+            display: '1 día',
+        },
+        '15_DAYS': {
+            minutes: 60 * 24 * 15,
+            display: '15 días',
+        },
+        '30_DAYS': {
+            minutes: 60 * 24 * 30,
+            display: '30 días',
+        },
+    },
 };

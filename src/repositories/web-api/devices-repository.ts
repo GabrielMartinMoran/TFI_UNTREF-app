@@ -3,12 +3,12 @@ import { Measure } from '../../models/measure';
 import { WebApiRepository } from './web-api-repository';
 
 export class DevicesRepository extends WebApiRepository {
-    public async getAll(): Promise<Array<Device>> {
+    public async getAll(): Promise<Device[]> {
         const response = await this.getRequest('/devices/get_all');
         return response.map((x: unknown) => Device.fromObject(x));
     }
 
-    public async getMeasures(deviceId: string, interval: number): Promise<Array<Measure>> {
+    public async getMeasures(deviceId: string, interval: number): Promise<Measure[]> {
         const response = await this.getRequest(`/devices/get_measures/${deviceId}/${interval}`);
         return response.map((x: unknown) => Measure.fromObject(x));
     }
@@ -23,5 +23,10 @@ export class DevicesRepository extends WebApiRepository {
     public async isTurnedOn(deviceId: string): Promise<boolean> {
         const response = await this.getRequest(`/devices/get_state/${deviceId}`);
         return response.turned_on;
+    }
+
+    public async getAllDevicesMeasures(interval: number): Promise<Measure[]> {
+        const response = await this.getRequest(`/devices/get_measures_for_all_devices/${interval}`);
+        return response.map((x: unknown) => Measure.fromObject(x));
     }
 }
