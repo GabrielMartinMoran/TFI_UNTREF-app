@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Text, TouchableHighlight, View } from 'react-native';
 import { CONFIG } from '../../config';
+import { ChipButton } from './ChipButton';
 export type TimeRangePickerProps = {
     onChange: (minutesRange: number) => void;
 };
@@ -19,6 +20,16 @@ export const TimeRangePicker: React.FC<TimeRangePickerProps> = ({ onChange }) =>
 
     const renderRanges = () => {
         return ranges.map((_range: any) => (
+            <ChipButton
+                title={_range.display}
+                key={_range.display}
+                onPress={() => {
+                    setRange(_range);
+                    onChange(_range.minutes);
+                }}
+                focused={range === _range}
+            />
+            /*
             <TouchableHighlight
                 key={_range.display}
                 onPress={() => {
@@ -26,6 +37,7 @@ export const TimeRangePicker: React.FC<TimeRangePickerProps> = ({ onChange }) =>
                     onChange(_range.minutes);
                 }}
             >
+                
                 <Text
                     style={{
                         textAlign: 'center',
@@ -38,6 +50,7 @@ export const TimeRangePicker: React.FC<TimeRangePickerProps> = ({ onChange }) =>
                     {_range.display}
                 </Text>
             </TouchableHighlight>
+                */
         ));
     };
 

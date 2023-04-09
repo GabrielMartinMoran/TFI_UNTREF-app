@@ -7,41 +7,31 @@ import { Task } from '../../models/scheduling/task';
 import { Checkbox } from 'react-native-paper';
 import { EditTask } from '../scheduling/EditTask';
 import { EditDailyTask } from '../scheduling/EditDailyTask';
-import { useParams, useNavigate } from 'react-router-native';
-import { TaskActionPicker } from '../ui/TaskActionPicker';
+import { useParams } from 'react-router-native';
+import { useAppNavigate } from '../../hooks/use-app-navigate';
 
 export type EditTaskViewProps = {
     appContext: AppContext;
 };
 
 export const EditTaskView: React.FC<EditTaskViewProps> = ({ appContext }) => {
-    const schedulerRepository = appContext.getRepository(
-        SchedulerRepository
-    ) as SchedulerRepository;
+    const schedulerRepository = appContext.getRepository(SchedulerRepository) as SchedulerRepository;
 
     const { deviceId } = useParams();
-    const navigate = useNavigate();
+    const { navigateTo } = useAppNavigate(appContext);
 
     const tasks = appContext.getSharedState('tasks') as Array<Task>;
-    const editedTaskIndex = appContext.getSharedState('editedTaskIndex') as
-        | number
-        | null;
+    const editedTaskIndex = appContext.getSharedState('editedTaskIndex') as number | null;
 
     const [isDailyTask, setIsDailyTask] = useState(
-        editedTaskIndex !== null
-            ? tasks[editedTaskIndex] instanceof DailyTask
-            : false
+        editedTaskIndex !== null ? tasks[editedTaskIndex] instanceof DailyTask : false
     );
     const [task, setTask] = useState(
-        editedTaskIndex !== null
-            ? tasks[editedTaskIndex].clone()
-            : isDailyTask
-            ? DailyTask.new()
-            : Task.new()
+        editedTaskIndex !== null ? tasks[editedTaskIndex].clone() : isDailyTask ? DailyTask.new() : Task.new()
     );
 
     const goToScheduler = () => {
-        navigate(`/devices/${deviceId}/scheduler`);
+        navigateTo(`/devices/${deviceId}/scheduler`);
     };
 
     const onSubmit = async (task: Task) => {
@@ -73,11 +63,7 @@ export const EditTaskView: React.FC<EditTaskViewProps> = ({ appContext }) => {
     };
 
     const toggleDailyTaskEditor = () => {
-        setTask(
-            isDailyTask
-                ? (task as DailyTask).toTask()
-                : DailyTask.fromTask(task)
-        );
+        setTask(isDailyTask ? (task as DailyTask).toTask() : DailyTask.fromTask(task));
         setIsDailyTask(!isDailyTask);
     };
 
@@ -90,28 +76,15 @@ export const EditTaskView: React.FC<EditTaskViewProps> = ({ appContext }) => {
                     alignItems: 'center',
                 }}
             >
-                <Checkbox
-                    status={isDailyTask ? 'checked' : 'unchecked'}
-                    onPress={toggleDailyTaskEditor}
-                />
+                <Checkbox status={isDailyTask ? 'checked' : 'unchecked'} onPress={toggleDailyTaskEditor} />
                 <Text>Repetir</Text>
             </View>
             {isDailyTask ? (
-                <EditDailyTask
-                    initialValue={task as DailyTask}
-                    onSubmit={onSubmit}
-                    onCancel={() => goToScheduler()}
-                />
+                <EditDailyTask initialValue={task as DailyTask} onSubmit={onSubmit} onCancel={() => goToScheduler()} />
             ) : (
-                <EditTask
-                    initialValue={task}
-                    onSubmit={onSubmit}
-                    onCancel={() => goToScheduler()}
-                />
+                <EditTask initialValue={task} onSubmit={onSubmit} onCancel={() => goToScheduler()} />
             )}
-            {editedTaskIndex !== null ? (
-                <Button title="Eliminar" onPress={handleDelete} />
-            ) : null}
+            {editedTaskIndex !== null ? <Button title="Eliminar" onPress={handleDelete} /> : null}
         </View>
     );
 };

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, Button } from 'react-native';
+import { Text, View } from 'react-native';
 import { Link, useParams } from 'react-router-native';
 import { AppContext } from '../../app-context';
 import { Device } from '../../models/device';
 import { DevicesRepository } from '../../repositories/web-api/devices-repository';
 import { DevicesActionsRepository } from '../../repositories/web-api/device-actions-repository';
 import { MeasuresChart } from '../charts/MeasuresChart';
+import { Button } from '../ui/Button';
+import { useAppNavigate } from '../../hooks/use-app-navigate';
 
 export type DeviceViewProps = {
     appContext: AppContext;
@@ -19,6 +21,8 @@ export const DeviceView: React.FC<DeviceViewProps> = ({ appContext }) => {
     const device = appContext.getSharedState('device') as Device;
 
     const { deviceId } = useParams();
+
+    const { navigateTo } = useAppNavigate(appContext);
 
     const [deviceTurnedOn, setDeviceTurnedOn] = useState(device.turnedOn);
     const [deviceStateRequestTimer, setDeviceStateRequestTimer] = useState(null as NodeJS.Timer | null);
@@ -63,9 +67,7 @@ export const DeviceView: React.FC<DeviceViewProps> = ({ appContext }) => {
                 {deviceTurnedOn ? '🟡' : '⚫'} {device.name}
             </Text>
             <Button title={deviceTurnedOn ? 'Apagar' : 'Encender'} onPress={() => toggleDeviceState()} />
-            <Link to={`/devices/${deviceId}/scheduler`}>
-                <Text>📆 Scheduler</Text>
-            </Link>
+            <Text onPress={() => navigateTo(`/devices/${deviceId}/scheduler`, 'Scheduler')}>📆 Scheduler</Text>
             <MeasuresChart appContext={appContext} deviceId={device.deviceId} />
         </View>
     );

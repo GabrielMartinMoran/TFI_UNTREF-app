@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Text, TextInput, View } from 'react-native';
-import { useNavigate } from 'react-router-native';
 import { AppContext } from '../../../app-context';
 import { DeviceConfigurationRepository } from '../../../repositories/device-api/device-configuration-repository';
 import { AuthRepository } from '../../../repositories/web-api/auth-repository';
@@ -18,7 +17,7 @@ export const ConfigureDeviceViewceView: React.FC<ConfigureDeviceViewProps> = ({ 
     const devicesRepository = appContext.getRepository(DevicesRepository) as DevicesRepository;
     const authRepository = appContext.getRepository(AuthRepository) as AuthRepository;
 
-    const navigate = useNavigate();
+    const { navigateTo } = useAppNavigate(appContext);
 
     const [deviceName, setDeviceName] = useState('');
 
@@ -32,7 +31,7 @@ export const ConfigureDeviceViewceView: React.FC<ConfigureDeviceViewProps> = ({ 
         // Send the token to the device
         await deviceConfigurationRepository.setToken(deviceToken);
         // Navigate to the next stage of the configuration
-        navigate('/devices/networks');
+        navigateTo('/devices/networks');
     };
 
     return (

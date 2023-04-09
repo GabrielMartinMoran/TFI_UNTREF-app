@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Text, TextInput, View } from 'react-native';
-import { useNavigate } from 'react-router-native';
 import { AppContext } from '../../app-context';
 import { AuthRepository } from '../../repositories/web-api/auth-repository';
 import { Button } from '../ui/Button';
+import { useAppNavigate } from '../../hooks/use-app-navigate';
 
 export type LoginViewProps = {
     appContext: AppContext;
@@ -15,19 +15,19 @@ export const LoginView: React.FC<LoginViewProps> = ({ appContext }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const navigate = useNavigate();
+    const { navigateTo } = useAppNavigate(appContext);
 
     const login = async () => {
         try {
             await authRepository.login(email, password);
-            navigate('/home');
+            navigateTo('/home');
         } catch (error: any) {
             console.warn(error);
         }
     };
 
     const goToRegister = () => {
-        navigate('/register');
+        navigateTo('/register');
     };
 
     return (

@@ -5,8 +5,9 @@ import { Device } from '../../models/device';
 import { Task } from '../../models/scheduling/task';
 import { SchedulerRepository } from '../../repositories/web-api/scheduler-repository';
 import { TaskList } from '../scheduling/TaskList';
-import { useNavigate, useParams } from 'react-router-native';
+import { useParams } from 'react-router-native';
 import { Button } from '../ui/Button';
+import { useAppNavigate } from '../../hooks/use-app-navigate';
 
 export type SchedulerViewProps = {
     appContext: AppContext;
@@ -17,7 +18,7 @@ export const SchedulerView: React.FC<SchedulerViewProps> = ({ appContext }) => {
     const device = appContext.getSharedState('device') as Device;
     const { deviceId } = useParams();
     const [tasks, setTasks] = useState([] as Array<Task>);
-    const navigate = useNavigate();
+    const { navigateTo } = useAppNavigate(appContext);
 
     const getTasks = async (): Promise<Task[]> => {
         try {
@@ -37,7 +38,7 @@ export const SchedulerView: React.FC<SchedulerViewProps> = ({ appContext }) => {
     }, []);
 
     const goToTaskEditor = () => {
-        navigate(`/devices/${deviceId}/scheduler/task`);
+        navigateTo(`/devices/${deviceId}/scheduler/task`);
     };
 
     const handleEditTask = (task: Task) => {

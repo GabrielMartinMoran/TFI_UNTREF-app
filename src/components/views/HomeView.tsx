@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { Text, View } from 'react-native';
-import { Link, useNavigate } from 'react-router-native';
+import { Link } from 'react-router-native';
 import { AppContext } from '../../app-context';
 import { AuthRepository } from '../../repositories/web-api/auth-repository';
 import { Button, ButtonType } from '../ui/Button';
+import { useAppNavigate } from '../../hooks/use-app-navigate';
 
 export type HomeViewProps = {
     appContext: AppContext;
@@ -12,12 +13,12 @@ export type HomeViewProps = {
 export const HomeView: React.FC<HomeViewProps> = ({ appContext }) => {
     const authRepository = appContext.getRepository(AuthRepository) as AuthRepository;
 
-    const navigate = useNavigate();
+    const { navigateTo } = useAppNavigate(appContext);
 
     useEffect(() => {
         const checkLogged = async () => {
             if (!(await authRepository.isLogged())) {
-                navigate('/login');
+                navigateTo('/login');
             }
         };
 
@@ -27,14 +28,12 @@ export const HomeView: React.FC<HomeViewProps> = ({ appContext }) => {
     return (
         <View>
             <Text style={{ fontSize: 30 }}>Inicio</Text>
-            <Link to="/devices">
-                <Text>Mis dispositivos</Text>
-            </Link>
+            <Text onPress={() => navigateTo('/devices', 'Mis dispositivos')}>Mis dispositivos</Text>
             <Link to="/logout">
                 <Text>Logout</Text>
             </Link>
-            <Button title="Primary" onPress={() => {}} type={ButtonType.PRIMARY} />
-            <Button title="Accent" onPress={() => {}} type={ButtonType.ACCENT} />
+            <Button title="Primary" onPress={() => {}} buttonType={ButtonType.PRIMARY} />
+            <Button title="Accent" onPress={() => {}} buttonType={ButtonType.ACCENT} />
         </View>
     );
 };

@@ -7,34 +7,33 @@ export const enum ButtonType {
     ACCENT,
 }
 
-export type ButtonProps = {
+export type ChipButtonProps = {
     title: string;
     onPress?: () => void;
-    buttonType?: ButtonType;
     icon?: string | undefined;
+    focused: boolean;
 };
 
-export const Button: React.FC<ButtonProps> = ({
-    title,
-    onPress,
-    buttonType = ButtonType.PRIMARY,
-    icon = undefined,
-}) => {
+export const ChipButton: React.FC<ChipButtonProps> = ({ title, onPress, icon = undefined, focused = true }) => {
     return (
         <RNPButton
             icon={icon}
-            mode="contained"
+            mode={focused ? 'contained' : 'outlined'}
             onPress={onPress}
             uppercase={false}
             style={{
-                backgroundColor: buttonType === ButtonType.PRIMARY ? PALLETE.PRIMARY : PALLETE.ACCENT,
+                backgroundColor: focused ? PALLETE.ACCENT : PALLETE.ACCENT_UNFOCUSED,
                 borderRadius: 30,
+                borderWidth: 0,
+                width: 45,
             }}
+            compact={true}
         >
             <RNPText
                 style={{
-                    color: PALLETE.BUTTONS_TEXT,
+                    color: focused ? PALLETE.BUTTONS_TEXT : PALLETE.ACCENT,
                     fontWeight: '400',
+                    fontSize: '0.7rem',
                 }}
             >
                 {title}

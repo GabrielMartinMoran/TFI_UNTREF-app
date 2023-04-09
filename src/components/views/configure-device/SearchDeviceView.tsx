@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Text, View } from 'react-native';
-import { useNavigate } from 'react-router-native';
 import { AppContext } from '../../../app-context';
 import { DeviceConfigurationRepository } from '../../../repositories/device-api/device-configuration-repository';
 import { Button } from '../../ui/Button';
+import { useAppNavigate } from '../../../hooks/use-app-navigate';
 
 export type SearchDeviceViewProps = {
     appContext: AppContext;
@@ -17,7 +17,7 @@ export const SearchDeviceView: React.FC<SearchDeviceViewProps> = ({ appContext }
         DeviceConfigurationRepository
     ) as DeviceConfigurationRepository;
 
-    const navigate = useNavigate();
+    const { navigateTo } = useAppNavigate(appContext);
 
     const [isSearching, setIsSearching] = useState(false);
     const [deviceFound, setDeviceFound] = useState(false);
@@ -43,7 +43,7 @@ export const SearchDeviceView: React.FC<SearchDeviceViewProps> = ({ appContext }
     const configureDevice = async () => {
         const deviceId = await deviceConfigurationRepository.getDeviceId();
         if (deviceId) throw Error('El dispositivo ya esta configurado!');
-        navigate(`/devices/configure`);
+        navigateTo(`/devices/configure`);
     };
 
     return (
