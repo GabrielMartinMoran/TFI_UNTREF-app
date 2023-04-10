@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import { Text, TextInput, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { AppContext } from '../../../app-context';
 import { DeviceConfigurationRepository } from '../../../repositories/device-api/device-configuration-repository';
 import { AuthRepository } from '../../../repositories/web-api/auth-repository';
 import { DevicesRepository } from '../../../repositories/web-api/devices-repository';
 import { Button } from '../../ui/Button';
+import { ROUTES } from '../../../routes';
+import { useAppNavigate } from '../../../hooks/use-app-navigate';
+import { TextInput } from '../../ui/TextInput';
 
 export type ConfigureDeviceViewProps = {
     appContext: AppContext;
@@ -31,13 +34,13 @@ export const ConfigureDeviceViewceView: React.FC<ConfigureDeviceViewProps> = ({ 
         // Send the token to the device
         await deviceConfigurationRepository.setToken(deviceToken);
         // Navigate to the next stage of the configuration
-        navigateTo('/devices/networks');
+        navigateTo({ route: ROUTES.configureDeviceNetwork });
     };
 
     return (
         <View>
             <Text style={{ fontSize: 30 }}>Configurar dispositivo</Text>
-            <TextInput placeholder="Nombre del dispositivo" onChangeText={setDeviceName} />
+            <TextInput label="Nombre del dispositivo" value={deviceName} onChangeText={setDeviceName} />
             <Button title="Configurar" onPress={configureDevice} />
         </View>
     );

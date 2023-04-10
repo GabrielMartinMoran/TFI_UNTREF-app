@@ -16,6 +16,8 @@ import { ConfigureDeviceNetworkView } from './views/configure-device/ConfigureDe
 import { View } from 'react-native';
 import { AppBar } from './ui/AppBar';
 import { Drawer } from './ui/Drawer';
+import { ROUTES } from '../routes';
+import { Snackbar } from './ui/Snackbar';
 
 export type RouterProps = {
     appContext: AppContext;
@@ -35,7 +37,10 @@ export const Router: React.FC<RouterProps> = ({ appContext }) => {
                     marginBottom: '1rem',
                 }}
             >
+                <Snackbar appContext={appContext} />
                 <Routes>
+                    {
+                        /*
                     <Route path="/" element={<HomeView appContext={appContext} />} />
                     <Route path="/login" element={<LoginView appContext={appContext} />} />
                     <Route path="/register" element={<RegisterView />} />
@@ -55,6 +60,15 @@ export const Router: React.FC<RouterProps> = ({ appContext }) => {
                     />
 
                     <Route path="*" element={<HomeView appContext={appContext} />} />
+                    */
+                        Object.values(ROUTES).map((route) => (
+                            <Route
+                                path={route.path}
+                                element={<route.component appContext={appContext} />}
+                                key={route.path}
+                            />
+                        ))
+                    }
                 </Routes>
             </View>
         </NativeRouter>

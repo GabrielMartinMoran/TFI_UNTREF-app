@@ -8,6 +8,7 @@ import { TaskList } from '../scheduling/TaskList';
 import { useParams } from 'react-router-native';
 import { Button } from '../ui/Button';
 import { useAppNavigate } from '../../hooks/use-app-navigate';
+import { ROUTES } from '../../routes';
 
 export type SchedulerViewProps = {
     appContext: AppContext;
@@ -38,7 +39,10 @@ export const SchedulerView: React.FC<SchedulerViewProps> = ({ appContext }) => {
     }, []);
 
     const goToTaskEditor = () => {
-        navigateTo(`/devices/${deviceId}/scheduler/task`);
+        navigateTo({
+            route: ROUTES.editTask,
+            params: { ':deviceId': device.deviceId },
+        });
     };
 
     const handleEditTask = (task: Task) => {

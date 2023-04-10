@@ -4,6 +4,7 @@ import { AppContext } from '../../../app-context';
 import { DeviceConfigurationRepository } from '../../../repositories/device-api/device-configuration-repository';
 import { Button } from '../../ui/Button';
 import { useAppNavigate } from '../../../hooks/use-app-navigate';
+import { ROUTES } from '../../../routes';
 
 export type SearchDeviceViewProps = {
     appContext: AppContext;
@@ -42,8 +43,12 @@ export const SearchDeviceView: React.FC<SearchDeviceViewProps> = ({ appContext }
 
     const configureDevice = async () => {
         const deviceId = await deviceConfigurationRepository.getDeviceId();
-        if (deviceId) throw Error('El dispositivo ya esta configurado!');
-        navigateTo(`/devices/configure`);
+        if (deviceId) {
+            //throw Error();
+            appContext.showError('El dispositivo ya esta configurado!');
+            return;
+        }
+        navigateTo({ route: ROUTES.configureDevice });
     };
 
     return (

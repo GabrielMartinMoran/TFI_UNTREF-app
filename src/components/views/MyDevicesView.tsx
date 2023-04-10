@@ -6,6 +6,7 @@ import { DevicesRepository } from '../../repositories/web-api/devices-repository
 import { MeasuresChart } from '../charts/MeasuresChart';
 import { Button } from '../ui/Button';
 import { useAppNavigate } from '../../hooks/use-app-navigate';
+import { ROUTES } from '../../routes';
 
 export type MyDevicesViewProps = {
     appContext: AppContext;
@@ -33,11 +34,15 @@ export const MyDevicesView: React.FC<MyDevicesViewProps> = ({ appContext }) => {
 
     const goToDeviceView = (device: Device) => {
         appContext.setSharedState('device', device);
-        navigateTo(`/devices/${device.deviceId}`, device.name);
+        navigateTo({
+            route: ROUTES.device,
+            params: { ':deviceId': device.deviceId },
+            overriddenTitle: device.name,
+        });
     };
 
     const addDevice = () => {
-        navigateTo('/devices/search', 'Agregar dispositivo');
+        navigateTo({ route: ROUTES.searchDevices });
     };
 
     return (

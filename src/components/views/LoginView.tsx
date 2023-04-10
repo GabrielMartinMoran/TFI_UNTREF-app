@@ -4,6 +4,7 @@ import { AppContext } from '../../app-context';
 import { AuthRepository } from '../../repositories/web-api/auth-repository';
 import { Button } from '../ui/Button';
 import { useAppNavigate } from '../../hooks/use-app-navigate';
+import { ROUTES } from '../../routes';
 
 export type LoginViewProps = {
     appContext: AppContext;
@@ -20,14 +21,14 @@ export const LoginView: React.FC<LoginViewProps> = ({ appContext }) => {
     const login = async () => {
         try {
             await authRepository.login(email, password);
-            navigateTo('/home');
+            navigateTo({ route: ROUTES.home });
         } catch (error: any) {
             console.warn(error);
         }
     };
 
     const goToRegister = () => {
-        navigateTo('/register');
+        navigateTo({ route: ROUTES.register });
     };
 
     return (

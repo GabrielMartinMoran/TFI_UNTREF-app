@@ -8,6 +8,7 @@ import { DevicesActionsRepository } from '../../repositories/web-api/device-acti
 import { MeasuresChart } from '../charts/MeasuresChart';
 import { Button } from '../ui/Button';
 import { useAppNavigate } from '../../hooks/use-app-navigate';
+import { ROUTES } from '../../routes';
 
 export type DeviceViewProps = {
     appContext: AppContext;
@@ -67,7 +68,16 @@ export const DeviceView: React.FC<DeviceViewProps> = ({ appContext }) => {
                 {deviceTurnedOn ? '🟡' : '⚫'} {device.name}
             </Text>
             <Button title={deviceTurnedOn ? 'Apagar' : 'Encender'} onPress={() => toggleDeviceState()} />
-            <Text onPress={() => navigateTo(`/devices/${deviceId}/scheduler`, 'Scheduler')}>📆 Scheduler</Text>
+            <Text
+                onPress={() =>
+                    navigateTo({
+                        route: ROUTES.deviceScheduler,
+                        params: { ':deviceId': device.deviceId },
+                    })
+                }
+            >
+                📆 Scheduler
+            </Text>
             <MeasuresChart appContext={appContext} deviceId={device.deviceId} />
         </View>
     );

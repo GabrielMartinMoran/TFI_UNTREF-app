@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Appbar, Button as RNPButton, Text as RNPText } from 'react-native-paper';
 import { PALLETE } from '../../pallete';
 import { AppContext } from '../../app-context';
 import { CONFIG } from '../../config';
 import { useAppNavigate } from '../../hooks/use-app-navigate';
 import { Drawer as RNPDrawer } from 'react-native-paper';
 import { TouchableWithoutFeedback, View } from 'react-native';
+import { ROUTES } from '../../routes';
 
 export type DrawerProps = {
     appContext: AppContext;
@@ -13,7 +13,7 @@ export type DrawerProps = {
 
 export const Drawer: React.FC<DrawerProps> = ({ appContext }) => {
     const [visible, setVisible] = useState(false);
-    const [active, setActive] = useState('');
+    const { navigateTo } = useAppNavigate(appContext);
 
     const showDrawer = () => {
         setVisible(true);
@@ -58,23 +58,31 @@ export const Drawer: React.FC<DrawerProps> = ({ appContext }) => {
                         <RNPDrawer.Section title="Some title">
                             <RNPDrawer.Item
                                 label="Resumen general"
-                                active={active === 'home'}
-                                onPress={() => setActive('home')}
+                                onPress={() => {
+                                    hideDrawer();
+                                    navigateTo({ route: ROUTES.home });
+                                }}
                             />
                             <RNPDrawer.Item
                                 label="Mis dispositivos"
-                                active={active === 'my_devices'}
-                                onPress={() => setActive('my_devices')}
+                                onPress={() => {
+                                    hideDrawer();
+                                    navigateTo({ route: ROUTES.myDevices });
+                                }}
                             />
                             <RNPDrawer.Item
                                 label="Agregar dispositivo"
-                                active={active === 'add_devices'}
-                                onPress={() => setActive('add_devices')}
+                                onPress={() => {
+                                    hideDrawer();
+                                    navigateTo({ route: ROUTES.searchDevices });
+                                }}
                             />
                             <RNPDrawer.Item
                                 label="Cerrar sesión"
-                                active={active === 'logout'}
-                                onPress={() => setActive('logout')}
+                                onPress={() => {
+                                    hideDrawer();
+                                    navigateTo({ route: ROUTES.logout });
+                                }}
                             />
                         </RNPDrawer.Section>
                     </View>

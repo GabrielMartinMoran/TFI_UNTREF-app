@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import { AppContext } from '../../../app-context';
 import { DeviceConfigurationRepository } from '../../../repositories/device-api/device-configuration-repository';
+import { ROUTES } from '../../../routes';
+import { useAppNavigate } from '../../../hooks/use-app-navigate';
 
 export type SearchDeviceNetworkViewProps = {
     appContext: AppContext;
@@ -26,7 +28,7 @@ export const SearchDeviceNetworkView: React.FC<SearchDeviceNetworkViewProps> = (
 
     const configureNetwork = (ssid: string) => {
         appContext.setSharedState('selectedNetwork', ssid);
-        navigateTo('/devices/network');
+        navigateTo({ route: ROUTES.configureDeviceNetwork });
     };
 
     return (

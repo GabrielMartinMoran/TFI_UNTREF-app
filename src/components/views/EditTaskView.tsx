@@ -9,6 +9,7 @@ import { EditTask } from '../scheduling/EditTask';
 import { EditDailyTask } from '../scheduling/EditDailyTask';
 import { useParams } from 'react-router-native';
 import { useAppNavigate } from '../../hooks/use-app-navigate';
+import { ROUTES } from '../../routes';
 
 export type EditTaskViewProps = {
     appContext: AppContext;
@@ -31,7 +32,10 @@ export const EditTaskView: React.FC<EditTaskViewProps> = ({ appContext }) => {
     );
 
     const goToScheduler = () => {
-        navigateTo(`/devices/${deviceId}/scheduler`);
+        navigateTo({
+            route: ROUTES.deviceScheduler,
+            params: { ':deviceId': deviceId! },
+        });
     };
 
     const onSubmit = async (task: Task) => {

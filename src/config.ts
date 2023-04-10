@@ -29,6 +29,7 @@ export const CONFIG = {
     },
     STYLES: {
         APPBAR_HEIGHT: 50,
-        DRAWER_WIDTH: 200
+        DRAWER_WIDTH: 200,
     },
+    SNACKBAR_VISIBLE_TIME: 2000,
 };

@@ -4,6 +4,7 @@ import { AppContext } from '../../../app-context';
 import { DeviceConfigurationRepository } from '../../../repositories/device-api/device-configuration-repository';
 import { Button } from '../../ui/Button';
 import { useAppNavigate } from '../../../hooks/use-app-navigate';
+import { ROUTES } from '../../../routes';
 
 export type ConfigureDeviceNetworkViewProps = {
     appContext: AppContext;
@@ -21,7 +22,7 @@ export const ConfigureDeviceNetworkView: React.FC<ConfigureDeviceNetworkViewProp
     const saveNetwork = async () => {
         const ssid = appContext.getSharedState('selectedNetwork');
         await deviceConfigurationRepository.configureNetwork(ssid, password);
-        navigateTo('/devices');
+        navigateTo({ route: ROUTES.myDevices });
     };
 
     return (

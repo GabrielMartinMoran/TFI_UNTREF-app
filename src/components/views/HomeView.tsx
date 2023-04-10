@@ -5,6 +5,7 @@ import { AppContext } from '../../app-context';
 import { AuthRepository } from '../../repositories/web-api/auth-repository';
 import { Button, ButtonType } from '../ui/Button';
 import { useAppNavigate } from '../../hooks/use-app-navigate';
+import { ROUTES } from '../../routes';
 
 export type HomeViewProps = {
     appContext: AppContext;
@@ -18,7 +19,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ appContext }) => {
     useEffect(() => {
         const checkLogged = async () => {
             if (!(await authRepository.isLogged())) {
-                navigateTo('/login');
+                navigateTo({ route: ROUTES.login });
             }
         };
 
@@ -28,7 +29,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ appContext }) => {
     return (
         <View>
             <Text style={{ fontSize: 30 }}>Inicio</Text>
-            <Text onPress={() => navigateTo('/devices', 'Mis dispositivos')}>Mis dispositivos</Text>
+            <Text onPress={() => navigateTo({ route: ROUTES.myDevices })}>Mis dispositivos</Text>
             <Link to="/logout">
                 <Text>Logout</Text>
             </Link>
