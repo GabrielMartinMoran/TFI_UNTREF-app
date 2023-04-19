@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { Text, TextInput, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { AppContext } from '../../app-context';
 import { AuthRepository } from '../../repositories/web-api/auth-repository';
 import { Button } from '../ui/Button';
 import { useAppNavigate } from '../../hooks/use-app-navigate';
 import { ROUTES } from '../../routes';
+import { TextInput } from '../ui/TextInput';
+import { MessageType } from '../../models/message-type';
 
 export type LoginViewProps = {
     appContext: AppContext;
@@ -24,6 +26,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ appContext }) => {
             navigateTo({ route: ROUTES.home });
         } catch (error: any) {
             console.warn(error);
+            appContext.showMessage('Usuario o contraseña incorrectos', MessageType.ERROR);
         }
     };
 
@@ -34,8 +37,8 @@ export const LoginView: React.FC<LoginViewProps> = ({ appContext }) => {
     return (
         <View>
             <Text style={{ fontSize: 30 }}>Iniciar sesión</Text>
-            <TextInput placeholder="Correo electrónico" onChangeText={setEmail} />
-            <TextInput placeholder="Contraseña" secureTextEntry={true} onChangeText={setPassword} />
+            <TextInput label="Correo electrónico" value={email} onChangeText={setEmail} />
+            <TextInput label="Contraseña" secureTextEntry={true} value={password} onChangeText={setPassword} />
             <Button title="Ingresar" onPress={() => login()} />
             <Button title="Registrarse" onPress={() => goToRegister()} />
         </View>

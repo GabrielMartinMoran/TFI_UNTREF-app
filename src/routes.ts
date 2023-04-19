@@ -10,13 +10,14 @@ import { ConfigureDeviceNetworkView } from './components/views/configure-device/
 import { ConfigureDeviceViewceView } from './components/views/configure-device/ConfigureDeviceView';
 import { SearchDeviceNetworkView } from './components/views/configure-device/SearchDeviceNetworkView';
 import { SearchDeviceView } from './components/views/configure-device/SearchDeviceView';
+import { CONFIG } from './config';
 import { Route } from './models/route';
 
 export const ROUTES = {
     home: new Route({
         path: '/',
         component: HomeView,
-        title: 'Inicio',
+        title: CONFIG.DEFAULT_LOCATION_NAME,
     }),
     login: new Route({
         path: '/login',
@@ -76,6 +77,6 @@ export const ROUTES = {
     wildcard: new Route({
         path: '*',
         component: HomeView,
-        title: 'Inicio',
+        title: CONFIG.DEFAULT_LOCATION_NAME,
     }),
 };

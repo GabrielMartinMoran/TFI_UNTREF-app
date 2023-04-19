@@ -7,39 +7,42 @@ import { MeasuresChart } from '../charts/MeasuresChart';
 import { Button } from '../ui/Button';
 import { useAppNavigate } from '../../hooks/use-app-navigate';
 import { ROUTES } from '../../routes';
+import { DeviceListItem } from '../device/DeviceListItem';
+import { MessageType } from '../../models/message-type';
 
 export type MyDevicesViewProps = {
     appContext: AppContext;
 };
 
 export const MyDevicesView: React.FC<MyDevicesViewProps> = ({ appContext }) => {
+    const GET_DEVICES_REQUEST_INTERVAL = 10000;
+
     const devicesRepository = appContext.getRepository(DevicesRepository) as DevicesRepository;
 
     const [devices, setDevices] = useState([] as Array<Device>);
 
     const { navigateTo } = useAppNavigate(appContext);
 
-    useEffect(() => {
-        const getDevices = async () => {
-            try {
-                setDevices(await devicesRepository.getAll());
-            } catch (error) {
-                console.log(error);
-            }
-        };
+    const getDevices = async () => {
+        try {
+            const _devices = await devicesRepository.getAll();
+            setDevices(_devices);
+        } catch (error) {
+            console.log(error);
+            appContext.showMessage(
+                'Ha ocurrido un error al tratar de obtener la lista de dispositivos',
+                MessageType.ERROR
+            );
+        }
+    };
 
+    useEffect(() => {
         appContext.deleteSharedState('device');
         getDevices();
-    }, []);
+        const interval = setInterval(() => getDevices(), GET_DEVICES_REQUEST_INTERVAL);
 
-    const goToDeviceView = (device: Device) => {
-        appContext.setSharedState('device', device);
-        navigateTo({
-            route: ROUTES.device,
-            params: { ':deviceId': device.deviceId },
-            overriddenTitle: device.name,
-        });
-    };
+        return () => clearInterval(interval);
+    }, []);
 
     const addDevice = () => {
         navigateTo({ route: ROUTES.searchDevices });
@@ -49,11 +52,7 @@ export const MyDevicesView: React.FC<MyDevicesViewProps> = ({ appContext }) => {
         <View>
             <Text style={{ fontSize: 30 }}>Mis dispositivos</Text>
             {devices.map((device: Device) => (
-                <View key={device.deviceId}>
-                    <Text style={{ cursor: 'pointer' }} onPress={() => goToDeviceView(device)}>
-                        {device.turnedOn ? '🟡' : '⚫'} {device.name}
-                    </Text>
-                </View>
+                <DeviceListItem key={device.deviceId} appContext={appContext} device={device} />
             ))}
             <Button title="Agregar dispositivo" onPress={() => addDevice()} />
             <Text>Consumo de mis dispositivos</Text>

@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
 import { Text, View } from 'react-native';
-import { Link } from 'react-router-native';
 import { AppContext } from '../../app-context';
 import { AuthRepository } from '../../repositories/web-api/auth-repository';
-import { Button, ButtonType } from '../ui/Button';
 import { useAppNavigate } from '../../hooks/use-app-navigate';
 import { ROUTES } from '../../routes';
+import { MeasuresChart } from '../charts/MeasuresChart';
 
 export type HomeViewProps = {
     appContext: AppContext;
@@ -28,13 +27,10 @@ export const HomeView: React.FC<HomeViewProps> = ({ appContext }) => {
 
     return (
         <View>
-            <Text style={{ fontSize: 30 }}>Inicio</Text>
-            <Text onPress={() => navigateTo({ route: ROUTES.myDevices })}>Mis dispositivos</Text>
-            <Link to="/logout">
-                <Text>Logout</Text>
-            </Link>
-            <Button title="Primary" onPress={() => {}} buttonType={ButtonType.PRIMARY} />
-            <Button title="Accent" onPress={() => {}} buttonType={ButtonType.ACCENT} />
+            <Text style={{ fontSize: '1.5rem', marginTop: '1rem', marginBottom: '1rem' }}>
+                Consumo de mis dispositivos
+            </Text>
+            <MeasuresChart appContext={appContext} />
         </View>
     );
 };

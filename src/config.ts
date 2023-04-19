@@ -32,4 +32,5 @@ export const CONFIG = {
         DRAWER_WIDTH: 200,
     },
     SNACKBAR_VISIBLE_TIME: 2000,
+    DEFAULT_LOCATION_NAME: 'Resúmen general',
 };

@@ -13,10 +13,10 @@ export type AppBarProps = {
 export const AppBar: React.FC<AppBarProps> = ({ appContext }) => {
     const { navigateBack, isRoot } = useAppNavigate(appContext);
 
-    const [locationTitle, setLocationTitle] = useState('Inicio');
+    const [locationTitle, setLocationTitle] = useState(CONFIG.DEFAULT_LOCATION_NAME);
 
     const updateLocationTitle = (title: string | undefined) => {
-        setLocationTitle(title ?? 'Inicio');
+        setLocationTitle(title ?? CONFIG.DEFAULT_LOCATION_NAME);
     };
 
     useEffect(() => {
@@ -37,10 +37,11 @@ export const AppBar: React.FC<AppBarProps> = ({ appContext }) => {
                 height: CONFIG.STYLES.APPBAR_HEIGHT,
                 display: 'flex',
                 flex: 1,
+                backgroundColor: PALLETE.PRIMARY,
             }}
         >
             <IconButton icon="menu" size={30} onPress={menuPress} color={PALLETE.BUTTONS_TEXT} />
-            <Appbar.Content title={locationTitle} />
+            <Appbar.Content title={locationTitle} titleStyle={{ color: PALLETE.BUTTONS_TEXT, paddingTop: '0.2rem' }} />
         </Appbar.Header>
     );
 };

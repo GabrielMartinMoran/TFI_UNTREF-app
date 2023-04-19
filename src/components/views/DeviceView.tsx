@@ -26,7 +26,6 @@ export const DeviceView: React.FC<DeviceViewProps> = ({ appContext }) => {
     const { navigateTo } = useAppNavigate(appContext);
 
     const [deviceTurnedOn, setDeviceTurnedOn] = useState(device.turnedOn);
-    const [deviceStateRequestTimer, setDeviceStateRequestTimer] = useState(null as NodeJS.Timer | null);
 
     const getTurnedOn = async (): Promise<boolean> => {
         try {
@@ -37,20 +36,17 @@ export const DeviceView: React.FC<DeviceViewProps> = ({ appContext }) => {
         return false;
     };
 
+    const updateDeviceState = async () => {
+        const isTurnedOn = await getTurnedOn();
+        device.turnedOn = isTurnedOn;
+        setDeviceTurnedOn(isTurnedOn);
+    };
+
     useEffect(() => {
-        const updateDeviceState = async () => {
-            const isTurnedOn = await getTurnedOn();
-            device.turnedOn = isTurnedOn;
-            setDeviceTurnedOn(isTurnedOn);
-        };
-
         updateDeviceState();
-        setDeviceStateRequestTimer(setInterval(() => updateDeviceState(), DEVICE_STATE_REQUEST_INTERVAL));
+        const interval = setInterval(() => updateDeviceState(), DEVICE_STATE_REQUEST_INTERVAL);
 
-        return () => {
-            clearInterval(deviceStateRequestTimer as NodeJS.Timer);
-            setDeviceStateRequestTimer(null);
-        };
+        return () => clearInterval(interval);
     }, []);
 
     const toggleDeviceState = async () => {

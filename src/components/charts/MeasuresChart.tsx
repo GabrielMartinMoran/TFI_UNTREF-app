@@ -6,6 +6,8 @@ import { Measure } from '../../models/measure';
 import { CONFIG } from '../../config';
 import { TimeRangePicker } from '../ui/TimeRangePicker';
 import { Chart } from './Chart';
+import { MessageType } from '../../models/message-type';
+import { AuthRepository } from '../../repositories/web-api/auth-repository';
 
 export type MeasuresChartProps = {
     appContext: AppContext;
@@ -16,9 +18,9 @@ export const MeasuresChart: React.FC<MeasuresChartProps> = ({ appContext, device
     const MEASURES_REQUEST_INTERVAL = 5000;
 
     const devicesRepository = appContext.getRepository(DevicesRepository) as DevicesRepository;
+    const authRepository = appContext.getRepository(AuthRepository) as AuthRepository;
     const [measures, setMeasures] = useState([] as Array<Measure>);
     const [masuresRangeMinutesInterval, setMasuresRangeMinutesInterval] = useState(5);
-    const [measuresRequestTimer, setMeasuresRequestTimer] = useState(null as NodeJS.Timer | null);
 
     // Ref for getting the last value in the setInterval
     const masuresRangeMinutesIntervalRef = useRef(masuresRangeMinutesInterval);
@@ -32,24 +34,26 @@ export const MeasuresChart: React.FC<MeasuresChartProps> = ({ appContext, device
                 return await devicesRepository.getAllDevicesMeasures(range);
             }
         } catch (error) {
-            console.log(error);
+            console.error(error);
+            appContext.showMessage(
+                'Ha ocurrido un error al tratar de obtener muestras del servidor',
+                MessageType.ERROR
+            );
         }
         return [];
     };
 
+    const updateMeasures = async () => {
+        if (!(await authRepository.isLogged())) return;
+        const measures = await fetchMeasures(masuresRangeMinutesIntervalRef.current);
+        setMeasures(measures);
+    };
+
     useEffect(() => {
-        const updateMeasures = async () => {
-            const measures = await fetchMeasures(masuresRangeMinutesIntervalRef.current);
-            setMeasures(measures);
-        };
-
         updateMeasures();
-        setMeasuresRequestTimer(setInterval(() => updateMeasures(), MEASURES_REQUEST_INTERVAL));
+        const interval = setInterval(() => updateMeasures(), MEASURES_REQUEST_INTERVAL);
 
-        return () => {
-            clearInterval(measuresRequestTimer as NodeJS.Timer);
-            setMeasuresRequestTimer(null);
-        };
+        return () => clearInterval(interval);
     }, []);
 
     const handleRangePickerChange = async (range: number) => {
