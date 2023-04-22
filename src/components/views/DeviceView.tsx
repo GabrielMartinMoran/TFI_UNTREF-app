@@ -6,9 +6,13 @@ import { Device } from '../../models/device';
 import { DevicesRepository } from '../../repositories/web-api/devices-repository';
 import { DevicesActionsRepository } from '../../repositories/web-api/device-actions-repository';
 import { MeasuresChart } from '../charts/MeasuresChart';
-import { Button } from '../ui/Button';
+import { Button, ButtonType } from '../ui/Button';
 import { useAppNavigate } from '../../hooks/use-app-navigate';
 import { ROUTES } from '../../routes';
+import { TurnedOnStateChip } from '../ui/states/TurnedOnStateChip';
+import { ConnectedStateChip } from '../ui/states/ConnectedStateChip';
+import { MessageType } from '../../models/message-type';
+import { FloatingActionButton } from '../ui/FloatingActionButton';
 
 export type DeviceViewProps = {
     appContext: AppContext;
@@ -49,32 +53,58 @@ export const DeviceView: React.FC<DeviceViewProps> = ({ appContext }) => {
         return () => clearInterval(interval);
     }, []);
 
-    const toggleDeviceState = async () => {
+    const setDeviceState = async (turnedOn: boolean) => {
         try {
-            const newState = !device.turnedOn;
-            await deviceActionsRepository.sendStateAction(device.deviceId, newState);
+            await deviceActionsRepository.sendStateAction(device.deviceId, turnedOn);
         } catch (error) {
             console.log(error);
+            appContext.showMessage(
+                `Ha ocurrido un error al tratar de ${turnedOn ? 'encender' : 'apagar'} el dispositivo ${device.name}`,
+                MessageType.ERROR
+            );
         }
     };
 
     return (
-        <View>
-            <Text style={{ fontSize: 30 }}>
-                {deviceTurnedOn ? '🟡' : '⚫'} {device.name}
-            </Text>
-            <Button title={deviceTurnedOn ? 'Apagar' : 'Encender'} onPress={() => toggleDeviceState()} />
-            <Text
+        <View style={{ marginTop: '1rem' }}>
+            <View style={{ display: 'flex', flexDirection: 'row' }}>
+                <Text style={{ cursor: 'pointer', fontSize: 30 }}>{device.name}</Text>
+                <View style={{ flex: 1 }}></View>
+                <TurnedOnStateChip
+                    isTurnedOn={device.turnedOn}
+                    isConnected={device.active}
+                    onPress={() => setDeviceState(!device.turnedOn)}
+                />
+                <ConnectedStateChip isConnected={device.active} />
+            </View>
+            <View style={{ margin: '1rem' }} />
+            {/*
+            <Button
+                title="Programar encendido / apagado automático"
+                buttonType={ButtonType.ACCENT}
+                icon="calendar"
                 onPress={() =>
                     navigateTo({
                         route: ROUTES.deviceScheduler,
                         params: { ':deviceId': device.deviceId },
                     })
                 }
-            >
-                📆 Scheduler
-            </Text>
+            />
+            */}
+            <View style={{ margin: '2rem' }} />
+            <Text style={{ fontSize: '1.2rem', marginBottom: '1rem' }}>Detalle de consumo</Text>
             <MeasuresChart appContext={appContext} deviceId={device.deviceId} />
+            <View style={{ margin: '1.5rem' }} />
+            <FloatingActionButton
+                label="Programar encendido / apagado"
+                icon="calendar"
+                onPress={() =>
+                    navigateTo({
+                        route: ROUTES.deviceScheduler,
+                        params: { ':deviceId': device.deviceId },
+                    })
+                }
+            />
         </View>
     );
 };

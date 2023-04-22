@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, TextInput, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { AppContext } from '../../app-context';
 import { Device } from '../../models/device';
 import { DevicesRepository } from '../../repositories/web-api/devices-repository';
@@ -9,13 +9,15 @@ import { useAppNavigate } from '../../hooks/use-app-navigate';
 import { ROUTES } from '../../routes';
 import { DeviceListItem } from '../device/DeviceListItem';
 import { MessageType } from '../../models/message-type';
+import { AnimatedFAB } from 'react-native-paper';
+import { FloatingActionButton } from '../ui/FloatingActionButton';
 
 export type MyDevicesViewProps = {
     appContext: AppContext;
 };
 
 export const MyDevicesView: React.FC<MyDevicesViewProps> = ({ appContext }) => {
-    const GET_DEVICES_REQUEST_INTERVAL = 10000;
+    const GET_DEVICES_REQUEST_INTERVAL = 2500;
 
     const devicesRepository = appContext.getRepository(DevicesRepository) as DevicesRepository;
 
@@ -54,9 +56,13 @@ export const MyDevicesView: React.FC<MyDevicesViewProps> = ({ appContext }) => {
             {devices.map((device: Device) => (
                 <DeviceListItem key={device.deviceId} appContext={appContext} device={device} />
             ))}
+            {/*
             <Button title="Agregar dispositivo" onPress={() => addDevice()} />
+            */}
             <Text>Consumo de mis dispositivos</Text>
             <MeasuresChart appContext={appContext} />
+            <View style={{ margin: '1.5rem' }} />
+            <FloatingActionButton label="Agregar dispositivo" icon="plus" onPress={addDevice} />
         </View>
     );
 };

@@ -27,11 +27,12 @@ export const MeasuresChart: React.FC<MeasuresChartProps> = ({ appContext, device
     masuresRangeMinutesIntervalRef.current = masuresRangeMinutesInterval;
 
     const fetchMeasures = async (range: number): Promise<Measure[]> => {
+        let measures = [] as Measure[];
         try {
             if (deviceId) {
-                return await devicesRepository.getMeasures(deviceId, range);
+                measures = await devicesRepository.getMeasures(deviceId, range);
             } else {
-                return await devicesRepository.getAllDevicesMeasures(range);
+                measures = await devicesRepository.getAllDevicesMeasures(range);
             }
         } catch (error) {
             console.error(error);
@@ -40,7 +41,8 @@ export const MeasuresChart: React.FC<MeasuresChartProps> = ({ appContext, device
                 MessageType.ERROR
             );
         }
-        return [];
+        if (measures.length > 0) return measures;
+        return [new Measure(0, 0, 0, new Date())];
     };
 
     const updateMeasures = async () => {

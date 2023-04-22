@@ -12,4 +12,5 @@ export const PALLETE = {
     DRAWER_SHADOW: '#171717B0',
     ERROR: '#E76162',
     SUCCESS: '#8BC34A',
+    INFO: '#4A8DC3'
 };
