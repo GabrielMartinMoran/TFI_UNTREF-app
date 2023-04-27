@@ -3,9 +3,9 @@ import { Text, View } from 'react-native';
 import { DailyTask } from '../../models/scheduling/daily-task';
 import { TimePickerModal } from 'react-native-paper-dates';
 import { WeekdaysPicker } from '../ui/WeekdaysPicker';
-import { Weekdays } from '../../utils/weekdays';
 import { TaskActionPicker } from '../ui/TaskActionPicker';
-import { Button } from '../ui/Button';
+import { Button, ButtonType } from '../ui/Button';
+import { Spacer } from '../ui/Spacer';
 
 export type EditDailyTaskProps = {
     initialValue: DailyTask;
@@ -13,11 +13,7 @@ export type EditDailyTaskProps = {
     onCancel: () => void;
 };
 
-export const EditDailyTask: React.FC<EditDailyTaskProps> = ({
-    initialValue,
-    onSubmit,
-    onCancel,
-}) => {
+export const EditDailyTask: React.FC<EditDailyTaskProps> = ({ initialValue, onSubmit, onCancel }) => {
     const [task, setTask] = useState(initialValue.clone());
     const [showTimeModal, setShowTimeModal] = useState(false);
 
@@ -29,14 +25,14 @@ export const EditDailyTask: React.FC<EditDailyTaskProps> = ({
     return (
         <View>
             <Text>Editar tarea diaria</Text>
-            <TaskActionPicker
-                value={task.action}
-                onChange={handleTaskActionChange}
-            />
+            <Spacer />
+            <TaskActionPicker value={task.action} onChange={handleTaskActionChange} />
+            <Spacer />
             <Button
                 title={`${task.moment.getHours()}:${task.moment.getMinutes()}`}
                 onPress={() => setShowTimeModal(true)}
             />
+            <Spacer />
             <TimePickerModal
                 locale="es"
                 visible={showTimeModal}
@@ -54,7 +50,7 @@ export const EditDailyTask: React.FC<EditDailyTaskProps> = ({
                     setTask(task.clone());
                 }}
             />
-
+            <Spacer />
             <WeekdaysPicker
                 value={task.weekdays}
                 onChange={(weekdays: Array<number>) => {
@@ -62,9 +58,24 @@ export const EditDailyTask: React.FC<EditDailyTaskProps> = ({
                     setTask(task.clone());
                 }}
             />
-
-            <Button title="Aceptar" onPress={() => onSubmit(task)} />
-            <Button title="Cancelar" onPress={() => onCancel()} />
+            <Spacer />
+            <View style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
+                <Button
+                    title="Guardar"
+                    icon="check"
+                    buttonType={ButtonType.CHECK}
+                    width="12rem"
+                    onPress={() => onSubmit(task)}
+                />
+                <Spacer />
+                <Button
+                    title="Descartar"
+                    icon="cancel"
+                    buttonType={ButtonType.CANCEL}
+                    width="12rem"
+                    onPress={() => onCancel()}
+                />
+            </View>
         </View>
     );
 };

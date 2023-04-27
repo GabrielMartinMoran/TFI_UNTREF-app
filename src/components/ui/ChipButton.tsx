@@ -12,9 +12,18 @@ export type ChipButtonProps = {
     onPress?: () => void;
     icon?: string | undefined;
     focused: boolean;
+    fontSize?: string;
+    width?: string;
 };
 
-export const ChipButton: React.FC<ChipButtonProps> = ({ title, onPress, icon = undefined, focused = true }) => {
+export const ChipButton: React.FC<ChipButtonProps> = ({
+    title,
+    onPress,
+    icon = undefined,
+    focused = true,
+    fontSize = '1rem',
+    width = 'fit-content',
+}) => {
     return (
         <RNPButton
             icon={icon}
@@ -25,15 +34,19 @@ export const ChipButton: React.FC<ChipButtonProps> = ({ title, onPress, icon = u
                 backgroundColor: focused ? PALLETE.ACCENT : PALLETE.ACCENT_UNFOCUSED,
                 borderRadius: 30,
                 borderWidth: 0,
-                width: 45,
+                width: width,
             }}
             compact={true}
+            labelStyle={{
+                fontSize: fontSize,
+            }}
         >
             <RNPText
                 style={{
                     color: focused ? PALLETE.BUTTONS_TEXT : PALLETE.ACCENT,
                     fontWeight: '400',
-                    fontSize: '0.7rem',
+                    marginLeft: '0.2rem',
+                    marginRight: '0.2rem',
                 }}
             >
                 {title}

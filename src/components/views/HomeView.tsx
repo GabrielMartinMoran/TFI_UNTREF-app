@@ -5,6 +5,7 @@ import { AuthRepository } from '../../repositories/web-api/auth-repository';
 import { useAppNavigate } from '../../hooks/use-app-navigate';
 import { ROUTES } from '../../routes';
 import { MeasuresChart } from '../charts/MeasuresChart';
+import { SectionTitle } from '../ui/SectionTitle';
 
 export type HomeViewProps = {
     appContext: AppContext;
@@ -27,9 +28,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ appContext }) => {
 
     return (
         <View>
-            <Text style={{ fontSize: '1.5rem', marginTop: '1rem', marginBottom: '1rem' }}>
-                Consumo de mis dispositivos
-            </Text>
+            <SectionTitle text="Consumo de mis dispositivos" />
             <MeasuresChart appContext={appContext} />
         </View>
     );

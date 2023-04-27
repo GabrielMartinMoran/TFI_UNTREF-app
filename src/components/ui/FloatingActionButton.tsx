@@ -22,6 +22,9 @@ export const FloatingActionButton: React.FC<FloatingActionButtonProps> = ({ labe
                 bottom: 20,
                 right: 20,
             }}
+            labelStyle={{
+                color: PALLETE.BUTTONS_TEXT,
+            }}
         >
             <RNPText
                 style={{

@@ -22,6 +22,8 @@ export const TimeRangePicker: React.FC<TimeRangePickerProps> = ({ onChange }) =>
         return ranges.map((_range: any) => (
             <ChipButton
                 title={_range.display}
+                fontSize="0.7rem"
+                width="55px"
                 key={_range.display}
                 onPress={() => {
                     setRange(_range);
@@ -29,28 +31,6 @@ export const TimeRangePicker: React.FC<TimeRangePickerProps> = ({ onChange }) =>
                 }}
                 focused={range === _range}
             />
-            /*
-            <TouchableHighlight
-                key={_range.display}
-                onPress={() => {
-                    setRange(_range);
-                    onChange(_range.minutes);
-                }}
-            >
-                
-                <Text
-                    style={{
-                        textAlign: 'center',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: 'white',
-                        backgroundColor: range === _range ? 'purple' : 'gray',
-                    }}
-                >
-                    {_range.display}
-                </Text>
-            </TouchableHighlight>
-                */
         ));
     };
 

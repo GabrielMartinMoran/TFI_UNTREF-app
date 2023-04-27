@@ -9,6 +9,8 @@ import { useParams } from 'react-router-native';
 import { Button } from '../ui/Button';
 import { useAppNavigate } from '../../hooks/use-app-navigate';
 import { ROUTES } from '../../routes';
+import { FloatingActionButton } from '../ui/FloatingActionButton';
+import { SectionTitle } from '../ui/SectionTitle';
 
 export type SchedulerViewProps = {
     appContext: AppContext;
@@ -59,8 +61,9 @@ export const SchedulerView: React.FC<SchedulerViewProps> = ({ appContext }) => {
 
     return (
         <View>
+            <SectionTitle text="Encendidos / apagados programados" />
             <TaskList tasks={tasks} onTaskPress={handleEditTask} />
-            <Button title="Crear configuración" onPress={handleCreateTask} />
+            <FloatingActionButton label="Agregar configuración" icon="plus" onPress={handleCreateTask} />
         </View>
     );
 };

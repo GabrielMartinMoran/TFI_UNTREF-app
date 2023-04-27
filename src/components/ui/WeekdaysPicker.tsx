@@ -1,16 +1,14 @@
 import React from 'react';
 import { Text, TouchableHighlight, View } from 'react-native';
 import { Weekdays } from '../../utils/weekdays';
+import { ChipButton } from './ChipButton';
 
 export type WeekdaysPickerProps = {
     value: Array<number>;
     onChange: (weekdays: Array<number>) => void;
 };
 
-export const WeekdaysPicker: React.FC<WeekdaysPickerProps> = ({
-    value,
-    onChange,
-}) => {
+export const WeekdaysPicker: React.FC<WeekdaysPickerProps> = ({ value, onChange }) => {
     const toggleWeekday = (weekday: number) => {
         const weekdays = [...value];
         const index = weekdays.indexOf(weekday);
@@ -29,27 +27,13 @@ export const WeekdaysPicker: React.FC<WeekdaysPickerProps> = ({
 
     const renderWeekdayButtons = () => {
         return Weekdays.all().map((weekday: number) => (
-            <TouchableHighlight
+            <ChipButton
+                title={Weekdays.mapShort(weekday)}
+                width="2.5rem"
                 key={weekday}
                 onPress={() => toggleWeekday(weekday)}
-            >
-                <Text
-                    style={{
-                        textAlign: 'center',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: 'white',
-                        backgroundColor: weekdayActive(weekday)
-                            ? 'purple'
-                            : 'gray',
-                        borderRadius: 50,
-                        width: '1.5rem',
-                        height: '1.5rem',
-                    }}
-                >
-                    {Weekdays.mapShort(weekday)}
-                </Text>
-            </TouchableHighlight>
+                focused={weekdayActive(weekday)}
+            />
         ));
     };
 

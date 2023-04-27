@@ -3,7 +3,8 @@ import { Text, View } from 'react-native';
 import { DatePickerModal, TimePickerModal } from 'react-native-paper-dates';
 import { Task } from '../../models/scheduling/task';
 import { TaskActionPicker } from '../ui/TaskActionPicker';
-import { Button } from '../ui/Button';
+import { Button, ButtonType } from '../ui/Button';
+import { Spacer } from '../ui/Spacer';
 
 export type EditTaskProps = {
     initialValue: Task;
@@ -11,11 +12,7 @@ export type EditTaskProps = {
     onCancel: () => void;
 };
 
-export const EditTask: React.FC<EditTaskProps> = ({
-    initialValue,
-    onSubmit,
-    onCancel,
-}) => {
+export const EditTask: React.FC<EditTaskProps> = ({ initialValue, onSubmit, onCancel }) => {
     const [task, setTask] = useState(initialValue.clone());
     const [showDateModal, setShowDateModal] = useState(false);
     const [showTimeModal, setShowTimeModal] = useState(false);
@@ -28,14 +25,11 @@ export const EditTask: React.FC<EditTaskProps> = ({
     return (
         <View>
             <Text>Editar tarea programada</Text>
-            <TaskActionPicker
-                value={task.action}
-                onChange={handleTaskActionChange}
-            />
-            <Button
-                title={`${task.moment.toLocaleDateString()}`}
-                onPress={() => setShowDateModal(true)}
-            />
+            <Spacer />
+            <TaskActionPicker value={task.action} onChange={handleTaskActionChange} />
+            <Spacer />
+            <Button title={`${task.moment.toLocaleDateString()}`} onPress={() => setShowDateModal(true)} />
+            <Spacer />
             <DatePickerModal
                 locale="en"
                 mode="single"
@@ -51,10 +45,12 @@ export const EditTask: React.FC<EditTaskProps> = ({
                     setTask(task.clone());
                 }}
             />
+            <Spacer />
             <Button
                 title={`${task.moment.getHours()}:${task.moment.getMinutes()}`}
                 onPress={() => setShowTimeModal(true)}
             />
+            <Spacer />
             <TimePickerModal
                 locale="es"
                 visible={showTimeModal}
@@ -72,8 +68,24 @@ export const EditTask: React.FC<EditTaskProps> = ({
                     setTask(task.clone());
                 }}
             />
-            <Button title="Aceptar" onPress={() => onSubmit(task)} />
-            <Button title="Cancelar" onPress={() => onCancel()} />
+            <Spacer />
+            <View style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
+                <Button
+                    title="Guardar"
+                    icon="check"
+                    buttonType={ButtonType.CHECK}
+                    width="12rem"
+                    onPress={() => onSubmit(task)}
+                />
+                <Spacer />
+                <Button
+                    title="Descartar"
+                    icon="cancel"
+                    buttonType={ButtonType.CANCEL}
+                    width="12rem"
+                    onPress={() => onCancel()}
+                />
+            </View>
         </View>
     );
 };

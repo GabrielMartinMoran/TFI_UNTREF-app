@@ -11,6 +11,8 @@ import { DeviceListItem } from '../device/DeviceListItem';
 import { MessageType } from '../../models/message-type';
 import { AnimatedFAB } from 'react-native-paper';
 import { FloatingActionButton } from '../ui/FloatingActionButton';
+import { SectionTitle } from '../ui/SectionTitle';
+import { Spacer } from '../ui/Spacer';
 
 export type MyDevicesViewProps = {
     appContext: AppContext;
@@ -52,16 +54,14 @@ export const MyDevicesView: React.FC<MyDevicesViewProps> = ({ appContext }) => {
 
     return (
         <View>
-            <Text style={{ fontSize: 30 }}>Mis dispositivos</Text>
+            <SectionTitle text="Mis dispositivos" />
             {devices.map((device: Device) => (
                 <DeviceListItem key={device.deviceId} appContext={appContext} device={device} />
             ))}
-            {/*
-            <Button title="Agregar dispositivo" onPress={() => addDevice()} />
-            */}
-            <Text>Consumo de mis dispositivos</Text>
+            <SectionTitle text="Consumo de mis dispositivos" />
+            <Spacer />
             <MeasuresChart appContext={appContext} />
-            <View style={{ margin: '1.5rem' }} />
+            <Spacer margin="1.5rem" />
             <FloatingActionButton label="Agregar dispositivo" icon="plus" onPress={addDevice} />
         </View>
     );
