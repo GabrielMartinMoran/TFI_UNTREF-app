@@ -6,6 +6,7 @@ import { WeekdaysPicker } from '../ui/WeekdaysPicker';
 import { TaskActionPicker } from '../ui/TaskActionPicker';
 import { Button, ButtonType } from '../ui/Button';
 import { Spacer } from '../ui/Spacer';
+import { SectionTitle } from '../ui/SectionTitle';
 
 export type EditDailyTaskProps = {
     initialValue: DailyTask;
@@ -24,7 +25,7 @@ export const EditDailyTask: React.FC<EditDailyTaskProps> = ({ initialValue, onSu
 
     return (
         <View>
-            <Text>Editar tarea diaria</Text>
+            <SectionTitle text="Editar tarea diaria" />
             <Spacer />
             <TaskActionPicker value={task.action} onChange={handleTaskActionChange} />
             <Spacer />

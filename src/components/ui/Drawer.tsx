@@ -6,21 +6,32 @@ import { useAppNavigate } from '../../hooks/use-app-navigate';
 import { Drawer as RNPDrawer } from 'react-native-paper';
 import { TouchableWithoutFeedback, View } from 'react-native';
 import { ROUTES } from '../../routes';
+import { AuthRepository } from '../../repositories/web-api/auth-repository';
 
 export type DrawerProps = {
     appContext: AppContext;
 };
 
 export const Drawer: React.FC<DrawerProps> = ({ appContext }) => {
+    const authRepository = appContext.getRepository(AuthRepository) as AuthRepository;
+
     const [visible, setVisible] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const { navigateTo } = useAppNavigate(appContext);
 
-    const showDrawer = () => {
+    const showDrawer = async () => {
+        await checkAuthentication();
         setVisible(true);
+    };
+
+    const checkAuthentication = async () => {
+        setIsAuthenticated(await authRepository.isLogged());
     };
 
     useEffect(() => {
         appContext.showDrawerCallback = showDrawer;
+
+        checkAuthentication();
 
         return () => {
             appContext.showDrawerCallback = () => {};
@@ -55,35 +66,56 @@ export const Drawer: React.FC<DrawerProps> = ({ appContext }) => {
                             width: CONFIG.STYLES.DRAWER_WIDTH,
                         }}
                     >
-                        <RNPDrawer.Section title="Some title">
-                            <RNPDrawer.Item
-                                label="Resumen general"
-                                onPress={() => {
-                                    hideDrawer();
-                                    navigateTo({ route: ROUTES.home });
-                                }}
-                            />
-                            <RNPDrawer.Item
-                                label="Mis dispositivos"
-                                onPress={() => {
-                                    hideDrawer();
-                                    navigateTo({ route: ROUTES.myDevices });
-                                }}
-                            />
-                            <RNPDrawer.Item
-                                label="Agregar dispositivo"
-                                onPress={() => {
-                                    hideDrawer();
-                                    navigateTo({ route: ROUTES.searchDevices });
-                                }}
-                            />
-                            <RNPDrawer.Item
-                                label="Cerrar sesión"
-                                onPress={() => {
-                                    hideDrawer();
-                                    navigateTo({ route: ROUTES.logout });
-                                }}
-                            />
+                        <RNPDrawer.Section title="Administrador de dispositivos">
+                            {isAuthenticated ? (
+                                <>
+                                    <RNPDrawer.Item
+                                        label="Resumen general"
+                                        onPress={() => {
+                                            hideDrawer();
+                                            navigateTo({ route: ROUTES.home });
+                                        }}
+                                    />
+                                    <RNPDrawer.Item
+                                        label="Mis dispositivos"
+                                        onPress={() => {
+                                            hideDrawer();
+                                            navigateTo({ route: ROUTES.myDevices });
+                                        }}
+                                    />
+                                    <RNPDrawer.Item
+                                        label="Agregar dispositivo"
+                                        onPress={() => {
+                                            hideDrawer();
+                                            navigateTo({ route: ROUTES.searchDevices });
+                                        }}
+                                    />
+                                    <RNPDrawer.Item
+                                        label="Cerrar sesión"
+                                        onPress={() => {
+                                            hideDrawer();
+                                            navigateTo({ route: ROUTES.logout });
+                                        }}
+                                    />
+                                </>
+                            ) : (
+                                <>
+                                    <RNPDrawer.Item
+                                        label="Iniciar sesión"
+                                        onPress={() => {
+                                            hideDrawer();
+                                            navigateTo({ route: ROUTES.login });
+                                        }}
+                                    />
+                                    <RNPDrawer.Item
+                                        label="Registrarse"
+                                        onPress={() => {
+                                            hideDrawer();
+                                            navigateTo({ route: ROUTES.register });
+                                        }}
+                                    />
+                                </>
+                            )}
                         </RNPDrawer.Section>
                     </View>
                     <TouchableWithoutFeedback onPress={hideDrawer}>

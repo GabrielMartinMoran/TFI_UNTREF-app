@@ -62,7 +62,7 @@ export const ROUTES = {
     device: new Route({
         path: '/devices/:deviceId',
         component: DeviceView,
-        title: null,
+        title: undefined,
     }),
     deviceScheduler: new Route({
         path: '/devices/:deviceId/scheduler',

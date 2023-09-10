@@ -16,6 +16,7 @@ export type ButtonProps = {
     icon?: string | undefined;
     fontSize?: string;
     width?: string;
+    disabled?: boolean;
 };
 
 export const Button: React.FC<ButtonProps> = ({
@@ -25,6 +26,7 @@ export const Button: React.FC<ButtonProps> = ({
     icon = undefined,
     fontSize = '1rem',
     width = '100%',
+    disabled = false,
 }) => {
     const getBackgroundColor = () => {
         if (buttonType === ButtonType.PRIMARY) return PALLETE.PRIMARY;
@@ -40,7 +42,7 @@ export const Button: React.FC<ButtonProps> = ({
             onPress={onPress}
             uppercase={false}
             style={{
-                backgroundColor: getBackgroundColor(),
+                backgroundColor: `${getBackgroundColor()}${disabled ? 'AB' : 'FF'}`,
                 borderRadius: 30,
                 width: width,
             }}
@@ -48,6 +50,7 @@ export const Button: React.FC<ButtonProps> = ({
                 color: PALLETE.BUTTONS_TEXT,
                 fontSize: fontSize,
             }}
+            disabled={disabled}
         >
             <RNPText
                 style={{

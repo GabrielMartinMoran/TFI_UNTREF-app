@@ -81,7 +81,7 @@ export const EditTaskView: React.FC<EditTaskViewProps> = ({ appContext }) => {
                 }}
             >
                 <Checkbox status={isDailyTask ? 'checked' : 'unchecked'} onPress={toggleDailyTaskEditor} />
-                <Text>Repetir</Text>
+                <Text>¿Se repite esta tarea varios días a la semana?</Text>
             </View>
             {isDailyTask ? (
                 <EditDailyTask initialValue={task as DailyTask} onSubmit={onSubmit} onCancel={() => goToScheduler()} />

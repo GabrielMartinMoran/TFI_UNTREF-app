@@ -7,6 +7,6 @@ export type SectionTitleProps = {
 
 export const SectionTitle: React.FC<SectionTitleProps> = ({ text }) => {
     return (
-        <Text style={{ marginTop: '1rem', marginBottom: '1rem', fontSize: '1.7rem', fontWeight: '500' }}>{text}</Text>
+        <Text style={{ marginTop: '1rem', marginBottom: '0.5rem', fontSize: '1.7rem', fontWeight: '500' }}>{text}</Text>
     );
 };

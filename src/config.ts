@@ -29,7 +29,7 @@ export const CONFIG = {
     },
     STYLES: {
         APPBAR_HEIGHT: 50,
-        DRAWER_WIDTH: 200,
+        DRAWER_WIDTH: 220,
     },
     SNACKBAR_VISIBLE_TIME: 2000,
     DEFAULT_LOCATION_NAME: 'Resúmen general',

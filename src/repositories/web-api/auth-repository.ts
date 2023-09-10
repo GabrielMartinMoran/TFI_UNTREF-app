@@ -26,4 +26,12 @@ export class AuthRepository extends WebApiRepository {
         const response = await this.getRequest(`/auth/generate_device_token/${deviceId}`);
         return response.token;
     }
+
+    public async register(username: string, email: string, password: string): Promise<void> {
+        await this.postRequest(`/auth/register`, {
+            username,
+            email,
+            password,
+        });
+    }
 }

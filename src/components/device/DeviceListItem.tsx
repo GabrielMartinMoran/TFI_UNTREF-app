@@ -46,7 +46,7 @@ export const DeviceListItem: React.FC<DeviceListItemProps> = ({ appContext, devi
         <View
             style={{
                 display: 'flex',
-                flexDirection: 'row',
+                flexDirection: 'column',
                 margin: '0.5rem',
                 backgroundColor: PALLETE.BACKGROUND,
                 shadowColor: PALLETE.DRAWER_SHADOW,
@@ -59,12 +59,22 @@ export const DeviceListItem: React.FC<DeviceListItemProps> = ({ appContext, devi
             <Text style={{ cursor: 'pointer', fontSize: '1.2rem', flex: 1 }} onPress={() => goToDeviceView(device)}>
                 {device.name}
             </Text>
-            <TurnedOnStateChip
-                isTurnedOn={device.turnedOn}
-                isConnected={device.active}
-                onPress={() => setDeviceState(!device.turnedOn)}
-            />
-            <ConnectedStateChip isConnected={device.active} />
+            <View
+                style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'flex-end',
+                    height: '1.2rem',
+                    marginTop: '0.5rem',
+                }}
+            >
+                <ConnectedStateChip isConnected={device.active} />
+                <TurnedOnStateChip
+                    isTurnedOn={device.turnedOn}
+                    isConnected={device.active}
+                    onPress={() => setDeviceState(!device.turnedOn)}
+                />
+            </View>
         </View>
     );
 };

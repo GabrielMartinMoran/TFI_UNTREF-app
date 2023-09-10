@@ -5,6 +5,7 @@ import { Task } from '../../models/scheduling/task';
 import { TaskActionPicker } from '../ui/TaskActionPicker';
 import { Button, ButtonType } from '../ui/Button';
 import { Spacer } from '../ui/Spacer';
+import { SectionTitle } from '../ui/SectionTitle';
 
 export type EditTaskProps = {
     initialValue: Task;
@@ -24,7 +25,7 @@ export const EditTask: React.FC<EditTaskProps> = ({ initialValue, onSubmit, onCa
 
     return (
         <View>
-            <Text>Editar tarea programada</Text>
+            <SectionTitle text="Editar tarea programada" />
             <Spacer />
             <TaskActionPicker value={task.action} onChange={handleTaskActionChange} />
             <Spacer />

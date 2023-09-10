@@ -67,31 +67,27 @@ export const DeviceView: React.FC<DeviceViewProps> = ({ appContext }) => {
 
     return (
         <View style={{ marginTop: '1rem' }}>
-            <View style={{ display: 'flex', flexDirection: 'row' }}>
+            <View style={{ display: 'flex', flexDirection: 'column', marginBottom: '0.5rem' }}>
                 <Text style={{ cursor: 'pointer', fontSize: 30 }}>{device.name}</Text>
-                <View style={{ flex: 1 }}></View>
-                <TurnedOnStateChip
-                    isTurnedOn={device.turnedOn}
-                    isConnected={device.active}
-                    onPress={() => setDeviceState(!device.turnedOn)}
-                />
-                <ConnectedStateChip isConnected={device.active} />
+                <View
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        height: '1.5rem',
+                        marginTop: '0.5rem',
+                        paddingLeft: '2rem',
+                        paddingRight: '2rem',
+                    }}
+                >
+                    <ConnectedStateChip isConnected={device.active} />
+                    <TurnedOnStateChip
+                        isTurnedOn={device.turnedOn}
+                        isConnected={device.active}
+                        onPress={() => setDeviceState(!device.turnedOn)}
+                    />
+                </View>
             </View>
-            <View style={{ margin: '1rem' }} />
-            {/*
-            <Button
-                title="Programar encendido / apagado automático"
-                buttonType={ButtonType.ACCENT}
-                icon="calendar"
-                onPress={() =>
-                    navigateTo({
-                        route: ROUTES.deviceScheduler,
-                        params: { ':deviceId': device.deviceId },
-                    })
-                }
-            />
-            */}
-            <View style={{ margin: '2rem' }} />
             <Text style={{ fontSize: '1.2rem', marginBottom: '1rem' }}>Detalle de consumo</Text>
             <MeasuresChart appContext={appContext} deviceId={device.deviceId} />
             <View style={{ margin: '1.5rem' }} />
