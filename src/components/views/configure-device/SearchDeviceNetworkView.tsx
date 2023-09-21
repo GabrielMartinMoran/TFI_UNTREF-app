@@ -4,6 +4,9 @@ import { AppContext } from '../../../app-context';
 import { DeviceConfigurationRepository } from '../../../repositories/device-api/device-configuration-repository';
 import { ROUTES } from '../../../routes';
 import { useAppNavigate } from '../../../hooks/use-app-navigate';
+import { SectionTitle } from '../../ui/SectionTitle';
+import { StateChip } from '../../ui/states/StateChip';
+import { PALLETE } from '../../../pallete';
 
 export type SearchDeviceNetworkViewProps = {
     appContext: AppContext;
@@ -33,11 +36,20 @@ export const SearchDeviceNetworkView: React.FC<SearchDeviceNetworkViewProps> = (
 
     return (
         <View>
-            <Text style={{ fontSize: 30 }}>Seleccione la red WiFi a configurar</Text>
+            <SectionTitle text="Seleccione la red WiFi a configurar" />
             {availableNetworks.map((ssid) => (
-                <Text key={ssid} onPress={() => configureNetwork(ssid)}>
-                    {ssid}
-                </Text>
+                <StateChip
+                    key={ssid}
+                    icon="wifi"
+                    text={ssid}
+                    color={PALLETE.PRIMARY}
+                    onPress={() => configureNetwork(ssid)}
+                    style={{
+                        width: '100%',
+                        marginBottom: '0.5rem',
+                        height: '1.5rem',
+                    }}
+                />
             ))}
         </View>
     );

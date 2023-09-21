@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { Text, TextInput, View } from 'react-native';
+import { View } from 'react-native';
 import { AppContext } from '../../../app-context';
 import { DeviceConfigurationRepository } from '../../../repositories/device-api/device-configuration-repository';
 import { Button } from '../../ui/Button';
 import { useAppNavigate } from '../../../hooks/use-app-navigate';
 import { ROUTES } from '../../../routes';
+import { SectionTitle } from '../../ui/SectionTitle';
+import { TextInput } from '../../ui/TextInput';
 
 export type ConfigureDeviceNetworkViewProps = {
     appContext: AppContext;
@@ -27,8 +29,14 @@ export const ConfigureDeviceNetworkView: React.FC<ConfigureDeviceNetworkViewProp
 
     return (
         <View>
-            <Text style={{ fontSize: 30 }}>{appContext.getSharedState('selectedNetwork')}</Text>
-            <TextInput placeholder="Contraseña de la red" secureTextEntry={true} onChangeText={setPassword} />
+            <SectionTitle text={appContext.getSharedState('selectedNetwork')} />
+            <TextInput
+                label="Contraseña de la red"
+                secureTextEntry={true}
+                value={password}
+                onChangeText={setPassword}
+            />
+            <View style={{ margin: '0.5rem' }} />
             <Button title="Guardar red" onPress={saveNetwork} />
         </View>
     );

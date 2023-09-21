@@ -8,6 +8,7 @@ import { Button } from '../../ui/Button';
 import { ROUTES } from '../../../routes';
 import { useAppNavigate } from '../../../hooks/use-app-navigate';
 import { TextInput } from '../../ui/TextInput';
+import { SectionTitle } from '../../ui/SectionTitle';
 
 export type ConfigureDeviceViewProps = {
     appContext: AppContext;
@@ -34,13 +35,14 @@ export const ConfigureDeviceViewceView: React.FC<ConfigureDeviceViewProps> = ({ 
         // Send the token to the device
         await deviceConfigurationRepository.setToken(deviceToken);
         // Navigate to the next stage of the configuration
-        navigateTo({ route: ROUTES.configureDeviceNetwork });
+        navigateTo({ route: ROUTES.searchDeviceNetworks });
     };
 
     return (
         <View>
-            <Text style={{ fontSize: 30 }}>Configurar dispositivo</Text>
+            <SectionTitle text="Configurar dispositivo" />
             <TextInput label="Nombre del dispositivo" value={deviceName} onChangeText={setDeviceName} />
+            <View style={{ margin: '1rem' }} />
             <Button title="Configurar" onPress={configureDevice} />
         </View>
     );
