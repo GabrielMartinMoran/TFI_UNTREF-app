@@ -1,0 +1,27 @@
+import React, { useEffect } from 'react';
+import { Text, View } from 'react-native';
+import { AppContext } from '../../app-context';
+import { AuthRepository } from '../../repositories/web-api/auth-repository';
+import { useAppNavigate } from '../../hooks/use-app-navigate';
+import { ROUTES } from '../../routes';
+
+export type LogoutViewProps = {
+    appContext: AppContext;
+};
+
+export const LogoutView: React.FC<LogoutViewProps> = ({ appContext }) => {
+    const authRepository = appContext.getRepository(AuthRepository) as AuthRepository;
+
+    const { navigateTo } = useAppNavigate(appContext);
+
+    useEffect(() => {
+        const logout = async () => {
+            await authRepository.logout();
+            navigateTo({ route: ROUTES.login });
+        };
+
+        logout();
+    }, []);
+
+    return <View></View>;
+};
