@@ -4,6 +4,8 @@ import { AppContext } from './src/app-context';
 import { Router } from './src/components/Router';
 import { PALLETE } from './src/pallete';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+import { isMobile } from './src/utils/platform-checker';
+import { Spacer } from './src/components/ui/Spacer';
 
 export default function App() {
     const appContext = new AppContext();
@@ -19,18 +21,18 @@ export default function App() {
     };
 
     return (
-        <View
-            style={{
-                backgroundColor: PALLETE.BACKGROUND,
-                width: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-            }}
-        >
-            <StatusBar />
-            <PaperProvider theme={theme}>
+        <PaperProvider theme={theme}>
+            <View
+                style={{
+                    backgroundColor: PALLETE.BACKGROUND,
+                    width: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                }}
+            >
+                <StatusBar />
                 <Router appContext={appContext} />
-            </PaperProvider>
-        </View>
+            </View>
+        </PaperProvider>
     );
 }

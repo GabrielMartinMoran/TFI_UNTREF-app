@@ -1,6 +1,6 @@
 export const CONFIG = {
-    API_URI: 'http://localhost:5000/api',
-    DEVICE_API_URI: 'http://localhost:5001/api',
+    API_URI: 'http://192.168.0.9:5000/api',
+    DEVICE_API_URI: 'http://192.168.0.9:5001/api',
     TIME_RANGES: {
         '5_MINUTES': {
             minutes: 5,
@@ -28,8 +28,7 @@ export const CONFIG = {
         },
     },
     STYLES: {
-        APPBAR_HEIGHT: 50,
-        DRAWER_WIDTH: 220,
+        DRAWER_WIDTH: '220px',
     },
     SNACKBAR_VISIBLE_TIME: 2000,
     DEFAULT_LOCATION_NAME: 'Resúmen general',

@@ -7,6 +7,7 @@ import { useAppNavigate } from '../../../hooks/use-app-navigate';
 import { SectionTitle } from '../../ui/SectionTitle';
 import { StateChip } from '../../ui/states/StateChip';
 import { PALLETE } from '../../../pallete';
+import { parseStyle } from '../../../utils/styles-parser';
 
 export type SearchDeviceNetworkViewProps = {
     appContext: AppContext;
@@ -44,11 +45,13 @@ export const SearchDeviceNetworkView: React.FC<SearchDeviceNetworkViewProps> = (
                     text={ssid}
                     color={PALLETE.PRIMARY}
                     onPress={() => configureNetwork(ssid)}
-                    style={{
+                    style={parseStyle({
                         width: '100%',
                         marginBottom: '0.5rem',
                         height: '1.5rem',
-                    }}
+                    }, {
+                        width:undefined
+                    })}
                 />
             ))}
         </View>

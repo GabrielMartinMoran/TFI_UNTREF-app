@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { AppContext } from '../../../app-context';
 import { DeviceConfigurationRepository } from '../../../repositories/device-api/device-configuration-repository';
 import { AuthRepository } from '../../../repositories/web-api/auth-repository';
@@ -9,6 +9,8 @@ import { ROUTES } from '../../../routes';
 import { useAppNavigate } from '../../../hooks/use-app-navigate';
 import { TextInput } from '../../ui/TextInput';
 import { SectionTitle } from '../../ui/SectionTitle';
+import { parseStyle } from '../../../utils/styles-parser';
+import { Spacer } from '../../ui/Spacer';
 
 export type ConfigureDeviceViewProps = {
     appContext: AppContext;
@@ -42,7 +44,7 @@ export const ConfigureDeviceViewceView: React.FC<ConfigureDeviceViewProps> = ({ 
         <View>
             <SectionTitle text="Configurar dispositivo" />
             <TextInput label="Nombre del dispositivo" value={deviceName} onChangeText={setDeviceName} />
-            <View style={{ margin: '1rem' }} />
+            <Spacer />
             <Button title="Configurar" onPress={configureDevice} />
         </View>
     );

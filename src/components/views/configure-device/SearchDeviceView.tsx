@@ -9,6 +9,7 @@ import { MessageType } from '../../../models/message-type';
 import { Spacer } from '../../ui/Spacer';
 import { ActivityIndicator } from 'react-native-paper';
 import { PALLETE } from '../../../pallete';
+import { parseStyle } from '../../../utils/styles-parser';
 
 export type SearchDeviceViewProps = {
     appContext: AppContext;
@@ -27,7 +28,7 @@ export const SearchDeviceView: React.FC<SearchDeviceViewProps> = ({ appContext }
     const [isSearching, setIsSearching] = useState(false);
     const [deviceFound, setDeviceFound] = useState(false);
 
-    const textStyle = { fontSize: '1.3rem' };
+    const textStyle = parseStyle({ fontSize: '1.3rem' });
 
     const searchDevice = () => {
         setIsSearching(true);
@@ -58,7 +59,7 @@ export const SearchDeviceView: React.FC<SearchDeviceViewProps> = ({ appContext }
 
     return (
         <View
-            style={{
+            style={parseStyle({
                 display: 'flex',
                 height: '100%',
                 flexDirection: 'column',
@@ -67,7 +68,12 @@ export const SearchDeviceView: React.FC<SearchDeviceViewProps> = ({ appContext }
                 textAlign: 'center',
                 margin: '2rem',
                 transform: 'translateY(-10%)',
-            }}
+            },{
+                paddingTop: '3rem',
+                marginBottom: '3rem',
+                transform: 'translateY(0px)',
+                height: undefined,
+            })}
         >
             {deviceFound ? (
                 <>
@@ -94,7 +100,14 @@ export const SearchDeviceView: React.FC<SearchDeviceViewProps> = ({ appContext }
                         <>
                             <Text style={textStyle}>
                                 Para buscar un dispositivo, conectate a la red del mismo y luego presiona{' '}
-                                <b>Buscar dispositivo</b>.
+                                <Text
+                                    style={parseStyle({
+                                        fontWeight: 'bold',
+                                    })}
+                                >
+                                    Buscar dispositivo
+                                </Text>
+                                .
                             </Text>
                             <Spacer margin="2rem" />
                             <Button

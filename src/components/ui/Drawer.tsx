@@ -7,6 +7,8 @@ import { Drawer as RNPDrawer } from 'react-native-paper';
 import { TouchableWithoutFeedback, View } from 'react-native';
 import { ROUTES } from '../../routes';
 import { AuthRepository } from '../../repositories/web-api/auth-repository';
+import { parseStyle } from '../../utils/styles-parser';
+import { isMobile } from '../../utils/platform-checker';
 
 export type DrawerProps = {
     appContext: AppContext;
@@ -24,47 +26,62 @@ export const Drawer: React.FC<DrawerProps> = ({ appContext }) => {
         setVisible(true);
     };
 
+    const hideDrawer = () => {
+        setVisible(false);
+    };
+
     const checkAuthentication = async () => {
         setIsAuthenticated(await authRepository.isLogged());
     };
 
     useEffect(() => {
         appContext.showDrawerCallback = showDrawer;
+        appContext.hideDrawerCallback = hideDrawer;
 
         checkAuthentication();
 
         return () => {
             appContext.showDrawerCallback = () => {};
+            appContext.hideDrawerCallback = () => {};
         };
     }, []);
-
-    const hideDrawer = () => {
-        setVisible(false);
-    };
 
     return (
         <>
             {visible ? (
                 <View
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        height: '100%',
-                        width: '100%',
-                        position: 'absolute',
-                        zIndex: '1',
-                    }}
+                    style={parseStyle(
+                        {
+                            display: 'flex',
+                            flexDirection: 'row',
+                            height: '100%',
+                            width: '100%',
+                            position: 'absolute',
+                            zIndex: 1,
+                            top: '50px',
+                        },
+                        {
+                            top: '25px',
+                        }
+                    )}
                 >
                     <View
-                        style={{
-                            height: '100%',
-                            backgroundColor: PALLETE.BACKGROUND,
-                            shadowColor: PALLETE.DRAWER_SHADOW,
-                            shadowOffset: { width: 1, height: 0 },
-                            shadowOpacity: 0.4,
-                            shadowRadius: 2,
-                            width: CONFIG.STYLES.DRAWER_WIDTH,
-                        }}
+                        style={parseStyle(
+                            {
+                                height: '100%',
+                                backgroundColor: PALLETE.BACKGROUND,
+                                shadowColor: PALLETE.DRAWER_SHADOW,
+                                shadowOffset: { width: 1, height: 0 },
+                                shadowOpacity: 0.4,
+                                shadowRadius: 2,
+                                width: '220px',
+                            },
+                            {
+                                elevation: 13,
+                                width: '500px',
+                                height: '500px',
+                            }
+                        )}
                     >
                         <RNPDrawer.Section title="Administrador de dispositivos">
                             {isAuthenticated ? (
@@ -72,28 +89,28 @@ export const Drawer: React.FC<DrawerProps> = ({ appContext }) => {
                                     <RNPDrawer.Item
                                         label="Resumen general"
                                         onPress={() => {
-                                            hideDrawer();
+                                            appContext.hideDrawerCallback();
                                             navigateTo({ route: ROUTES.home });
                                         }}
                                     />
                                     <RNPDrawer.Item
                                         label="Mis dispositivos"
                                         onPress={() => {
-                                            hideDrawer();
+                                            appContext.hideDrawerCallback();
                                             navigateTo({ route: ROUTES.myDevices });
                                         }}
                                     />
                                     <RNPDrawer.Item
                                         label="Agregar dispositivo"
                                         onPress={() => {
-                                            hideDrawer();
+                                            appContext.hideDrawerCallback();
                                             navigateTo({ route: ROUTES.searchDevices });
                                         }}
                                     />
                                     <RNPDrawer.Item
                                         label="Cerrar sesión"
                                         onPress={() => {
-                                            hideDrawer();
+                                            appContext.hideDrawerCallback();
                                             navigateTo({ route: ROUTES.logout });
                                         }}
                                     />
@@ -103,14 +120,14 @@ export const Drawer: React.FC<DrawerProps> = ({ appContext }) => {
                                     <RNPDrawer.Item
                                         label="Iniciar sesión"
                                         onPress={() => {
-                                            hideDrawer();
+                                            appContext.hideDrawerCallback();
                                             navigateTo({ route: ROUTES.login });
                                         }}
                                     />
                                     <RNPDrawer.Item
                                         label="Registrarse"
                                         onPress={() => {
-                                            hideDrawer();
+                                            appContext.hideDrawerCallback();
                                             navigateTo({ route: ROUTES.register });
                                         }}
                                     />
@@ -118,7 +135,7 @@ export const Drawer: React.FC<DrawerProps> = ({ appContext }) => {
                             )}
                         </RNPDrawer.Section>
                     </View>
-                    <TouchableWithoutFeedback onPress={hideDrawer}>
+                    <TouchableWithoutFeedback onPress={appContext.hideDrawerCallback}>
                         <View
                             style={{
                                 flex: 1,

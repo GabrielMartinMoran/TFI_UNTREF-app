@@ -8,6 +8,8 @@ import { AppContext } from '../../app-context';
 import { useAppNavigate } from '../../hooks/use-app-navigate';
 import { ROUTES } from '../../routes';
 import { MessageType } from '../../models/message-type';
+import { parseStyle } from '../../utils/styles-parser';
+import { Spacer } from '../ui/Spacer';
 
 export type RegisterViewProps = {
     appContext: AppContext;
@@ -47,18 +49,18 @@ export const RegisterView: React.FC<RegisterViewProps> = ({ appContext }) => {
         <View>
             <SectionTitle text="Registrarse" />
             <TextInput label="Nombre completo" value={name} onChangeText={setName} />
-            <View style={{ margin: '0.5rem' }} />
+            <Spacer margin="0.5rem" />
             <TextInput label="Correo electrónico" value={email} onChangeText={setEmail} />
-            <View style={{ margin: '0.5rem' }} />
+            <Spacer margin="0.5rem" />
             <TextInput label="Contraseña" value={password} onChangeText={setPassword} secureTextEntry={true} />
-            <View style={{ margin: '0.5rem' }} />
+            <Spacer margin="0.5rem" />
             <TextInput
                 label="Repetir contraseña"
                 value={repeatedPassword}
                 onChangeText={setRrepeatedPassword}
                 secureTextEntry={true}
             />
-            <View style={{ margin: '1rem' }} />
+            <Spacer />
             <Button
                 title="Registrarse"
                 onPress={() => register()}

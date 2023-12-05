@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Text, TouchableHighlight, View } from 'react-native';
+import { View } from 'react-native';
 import { CONFIG } from '../../config';
 import { ChipButton } from './ChipButton';
+import { isMobile } from '../../utils/platform-checker';
 export type TimeRangePickerProps = {
     onChange: (minutesRange: number) => void;
 };
@@ -22,8 +23,8 @@ export const TimeRangePicker: React.FC<TimeRangePickerProps> = ({ onChange }) =>
         return ranges.map((_range: any) => (
             <ChipButton
                 title={_range.display}
-                fontSize="0.7rem"
-                width="55px"
+                fontSize={isMobile() ? "0.7rem" : "0.7rem"}
+                width={isMobile() ? '25px' : '55px'}
                 key={_range.display}
                 onPress={() => {
                     setRange(_range);

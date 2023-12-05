@@ -1,12 +1,14 @@
 import React from 'react';
 import { Button as RNPButton, Text as RNPText } from 'react-native-paper';
 import { PALLETE } from '../../pallete';
+import { parseStyle } from '../../utils/styles-parser';
 
 export const enum ButtonType {
     PRIMARY,
     ACCENT,
     CHECK,
     CANCEL,
+    DELETE,
 }
 
 export type ButtonProps = {
@@ -31,7 +33,8 @@ export const Button: React.FC<ButtonProps> = ({
     const getBackgroundColor = () => {
         if (buttonType === ButtonType.PRIMARY) return PALLETE.PRIMARY;
         if (buttonType === ButtonType.CHECK) return PALLETE.SUCCESS;
-        if (buttonType === ButtonType.CANCEL) return PALLETE.ERROR;
+        if (buttonType === ButtonType.CANCEL) return PALLETE.SECONDARY_TEXT;
+        if (buttonType === ButtonType.DELETE) return PALLETE.ERROR;
         return PALLETE.ACCENT;
     };
 
@@ -41,15 +44,15 @@ export const Button: React.FC<ButtonProps> = ({
             mode="contained"
             onPress={onPress}
             uppercase={false}
-            style={{
+            style={parseStyle({
                 backgroundColor: `${getBackgroundColor()}${disabled ? 'AB' : 'FF'}`,
-                borderRadius: 30,
-                width: width,
-            }}
-            labelStyle={{
+                borderRadius: '30px',
+                width: width == '100%' ? undefined : width,
+            })}
+            labelStyle={parseStyle({
                 color: PALLETE.BUTTONS_TEXT,
                 fontSize: fontSize,
-            }}
+            })}
             disabled={disabled}
         >
             <RNPText

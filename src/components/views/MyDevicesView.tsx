@@ -58,11 +58,11 @@ export const MyDevicesView: React.FC<MyDevicesViewProps> = ({ appContext }) => {
             {devices.map((device: Device) => (
                 <DeviceListItem key={device.deviceId} appContext={appContext} device={device} />
             ))}
+            <FloatingActionButton label="Agregar dispositivo" icon="plus" onPress={addDevice} />
             <SectionTitle text="Consumo de mis dispositivos" />
             <Spacer />
             <MeasuresChart appContext={appContext} />
             <Spacer margin="1.5rem" />
-            <FloatingActionButton label="Agregar dispositivo" icon="plus" onPress={addDevice} />
         </View>
     );
 };
