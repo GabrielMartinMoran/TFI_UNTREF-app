@@ -7,6 +7,8 @@ import { useAppNavigate } from '../../../hooks/use-app-navigate';
 import { ROUTES } from '../../../routes';
 import { SectionTitle } from '../../ui/SectionTitle';
 import { TextInput } from '../../ui/TextInput';
+import { parseStyle } from '../../../utils/styles-parser';
+import { Spacer } from '../../ui/Spacer';
 
 export type ConfigureDeviceNetworkViewProps = {
     appContext: AppContext;
@@ -36,7 +38,7 @@ export const ConfigureDeviceNetworkView: React.FC<ConfigureDeviceNetworkViewProp
                 value={password}
                 onChangeText={setPassword}
             />
-            <View style={{ margin: '0.5rem' }} />
+            <Spacer margin="0.5rem" />
             <Button title="Guardar red" onPress={saveNetwork} />
         </View>
     );

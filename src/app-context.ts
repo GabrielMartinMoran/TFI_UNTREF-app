@@ -3,7 +3,7 @@ import { MessageType } from './models/message-type';
 import { ApiRepository } from './repositories/api-repository';
 
 type LocationTitleChangeCallback = (title: string | undefined) => void;
-type ShowDrawerCallback = () => void;
+type DrawerCallback = () => void;
 type ShowSnackbarMessageCallback = (message: string | null, messageType?: MessageType) => string;
 type HideSnackbarMessageCallback = (messageId: string) => void;
 
@@ -11,7 +11,9 @@ export class AppContext {
     protected repositories: Map<any, ApiRepository>;
     protected sharedState: Map<string, any>;
     protected _locationTitleChangeCallback: LocationTitleChangeCallback;
-    protected _showDrawerCallback: ShowDrawerCallback;
+    protected _showDrawerCallback: DrawerCallback;
+    protected _hideDrawerCallback: DrawerCallback;
+    protected _isDrawerShown: boolean;
     protected _showSnackbarMessageCallback: ShowSnackbarMessageCallback;
     protected _hideSnackbarMessageCallback: HideSnackbarMessageCallback;
 
@@ -20,6 +22,8 @@ export class AppContext {
         this.sharedState = !_sharedState ? new Map<string, any>() : _sharedState;
         this._locationTitleChangeCallback = (title: string | undefined) => {};
         this._showDrawerCallback = () => {};
+        this._hideDrawerCallback = () => {};
+        this._isDrawerShown = false;
         this._showSnackbarMessageCallback = (message: string | null, messageType?: MessageType) => '';
         this._hideSnackbarMessageCallback = (messageId: string) => {};
     }
@@ -52,12 +56,30 @@ export class AppContext {
         return this._locationTitleChangeCallback;
     }
 
-    public set showDrawerCallback(callback: ShowDrawerCallback) {
-        this._showDrawerCallback = callback;
+    public set showDrawerCallback(callback: DrawerCallback) {
+        this._showDrawerCallback = async () => {
+            await callback();
+            this._isDrawerShown = true;
+        };
     }
 
-    public get showDrawerCallback(): ShowDrawerCallback {
+    public get showDrawerCallback(): DrawerCallback {
         return this._showDrawerCallback;
+    }
+
+    public set hideDrawerCallback(callback: DrawerCallback) {
+        this._hideDrawerCallback = () => {
+            callback();
+            this._isDrawerShown = false;
+        };
+    }
+
+    public get hideDrawerCallback(): DrawerCallback {
+        return this._hideDrawerCallback;
+    }
+
+    public get isDrawerShown(): boolean {
+        return this._isDrawerShown;
     }
 
     public set showSnackbarMessageCallback(callback: ShowSnackbarMessageCallback) {

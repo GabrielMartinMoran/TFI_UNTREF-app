@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Appbar, IconButton, Button as RNPButton, Text as RNPText } from 'react-native-paper';
+import { Appbar, IconButton } from 'react-native-paper';
 import { PALLETE } from '../../pallete';
 import { AppContext } from '../../app-context';
 import { CONFIG } from '../../config';
 import { useAppNavigate } from '../../hooks/use-app-navigate';
-import { Icon } from 'react-native-paper/lib/typescript/components/List/List';
+import { parseStyle } from '../../utils/styles-parser';
+import { isMobile } from '../../utils/platform-checker';
 
 export type AppBarProps = {
     appContext: AppContext;
@@ -28,20 +29,41 @@ export const AppBar: React.FC<AppBarProps> = ({ appContext }) => {
     }, []);
 
     const menuPress = () => {
-        appContext.showDrawerCallback();
+        if (appContext.isDrawerShown) {
+            appContext.hideDrawerCallback();
+        } else {
+            appContext.showDrawerCallback();
+        }
     };
 
     return (
         <Appbar.Header
-            style={{
-                height: CONFIG.STYLES.APPBAR_HEIGHT,
-                display: 'flex',
-                flex: 1,
-                backgroundColor: PALLETE.PRIMARY,
-            }}
+            style={parseStyle(
+                {
+                    height: '50px',
+                    display: 'flex',
+                    position: 'fixed',
+                    zIndex: 2,
+                    width: '100%',
+                    backgroundColor: PALLETE.PRIMARY,
+                },
+                {
+                    display: 'flex',
+                    position: undefined,
+                    height: '25px',
+                    marginTop: 0,
+                    width: '200px',
+                }
+            )}
         >
             <IconButton icon="menu" size={30} onPress={menuPress} color={PALLETE.BUTTONS_TEXT} />
-            <Appbar.Content title={locationTitle} titleStyle={{ color: PALLETE.BUTTONS_TEXT, paddingTop: '0.2rem' }} />
+            <Appbar.Content
+                title={locationTitle}
+                titleStyle={parseStyle(
+                    { color: PALLETE.BUTTONS_TEXT, paddingTop: '0.2rem' },
+                    { paddingTop: -20, margin: 0 }
+                )}
+            />
         </Appbar.Header>
     );
 };

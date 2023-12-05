@@ -1,6 +1,8 @@
 import React from 'react';
 import { Button as RNPButton, Text as RNPText } from 'react-native-paper';
 import { PALLETE } from '../../pallete';
+import { parseStyle } from '../../utils/styles-parser';
+import { isMobile } from '../../utils/platform-checker';
 
 export const enum ButtonType {
     PRIMARY,
@@ -22,7 +24,7 @@ export const ChipButton: React.FC<ChipButtonProps> = ({
     icon = undefined,
     focused = true,
     fontSize = '1rem',
-    width = 'fit-content',
+    width = undefined,
 }) => {
     return (
         <RNPButton
@@ -30,24 +32,24 @@ export const ChipButton: React.FC<ChipButtonProps> = ({
             mode={focused ? 'contained' : 'outlined'}
             onPress={onPress}
             uppercase={false}
-            style={{
+            style={parseStyle({
                 backgroundColor: focused ? PALLETE.ACCENT : PALLETE.ACCENT_UNFOCUSED,
                 borderRadius: 30,
                 borderWidth: 0,
-                width: width,
-            }}
+                width: width === undefined ? (!isMobile() ? 'fit-content' : width) : width,
+            })}
             compact={true}
-            labelStyle={{
+            labelStyle={parseStyle({
                 fontSize: fontSize,
-            }}
+            })}
         >
             <RNPText
-                style={{
+                style={parseStyle({
                     color: focused ? PALLETE.BUTTONS_TEXT : PALLETE.ACCENT,
                     fontWeight: '400',
                     marginLeft: '0.2rem',
                     marginRight: '0.2rem',
-                }}
+                })}
             >
                 {title}
             </RNPText>

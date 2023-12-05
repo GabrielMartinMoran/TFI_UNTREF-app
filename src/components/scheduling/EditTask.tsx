@@ -25,8 +25,6 @@ export const EditTask: React.FC<EditTaskProps> = ({ initialValue, onSubmit, onCa
 
     return (
         <View>
-            <SectionTitle text="Editar tarea programada" />
-            <Spacer />
             <TaskActionPicker value={task.action} onChange={handleTaskActionChange} />
             <Spacer />
             <Button title={`${task.moment.toLocaleDateString()}`} onPress={() => setShowDateModal(true)} />
@@ -48,7 +46,9 @@ export const EditTask: React.FC<EditTaskProps> = ({ initialValue, onSubmit, onCa
             />
             <Spacer />
             <Button
-                title={`${task.moment.getHours()}:${task.moment.getMinutes()}`}
+                title={`${('0' + task.moment.getHours().toString()).slice(-2)}:${(
+                    '0' + task.moment.getMinutes().toString()
+                ).slice(-2)}`}
                 onPress={() => setShowTimeModal(true)}
             />
             <Spacer />
@@ -80,7 +80,7 @@ export const EditTask: React.FC<EditTaskProps> = ({ initialValue, onSubmit, onCa
                 />
                 <Spacer />
                 <Button
-                    title="Descartar"
+                    title="Cancelar"
                     icon="cancel"
                     buttonType={ButtonType.CANCEL}
                     width="12rem"

@@ -25,8 +25,6 @@ export const EditDailyTask: React.FC<EditDailyTaskProps> = ({ initialValue, onSu
 
     return (
         <View>
-            <SectionTitle text="Editar tarea diaria" />
-            <Spacer />
             <TaskActionPicker value={task.action} onChange={handleTaskActionChange} />
             <Spacer />
             <Button

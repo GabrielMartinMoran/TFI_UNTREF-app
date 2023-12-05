@@ -6,13 +6,14 @@ import { Device } from '../../models/device';
 import { DevicesRepository } from '../../repositories/web-api/devices-repository';
 import { DevicesActionsRepository } from '../../repositories/web-api/device-actions-repository';
 import { MeasuresChart } from '../charts/MeasuresChart';
-import { Button, ButtonType } from '../ui/Button';
 import { useAppNavigate } from '../../hooks/use-app-navigate';
 import { ROUTES } from '../../routes';
 import { TurnedOnStateChip } from '../ui/states/TurnedOnStateChip';
 import { ConnectedStateChip } from '../ui/states/ConnectedStateChip';
 import { MessageType } from '../../models/message-type';
 import { FloatingActionButton } from '../ui/FloatingActionButton';
+import { parseStyle } from '../../utils/styles-parser';
+import { Spacer } from '../ui/Spacer';
 
 export type DeviceViewProps = {
     appContext: AppContext;
@@ -66,11 +67,11 @@ export const DeviceView: React.FC<DeviceViewProps> = ({ appContext }) => {
     };
 
     return (
-        <View style={{ marginTop: '1rem' }}>
-            <View style={{ display: 'flex', flexDirection: 'column', marginBottom: '0.5rem' }}>
-                <Text style={{ cursor: 'pointer', fontSize: 30 }}>{device.name}</Text>
+        <View style={parseStyle({ marginTop: '1rem' })}>
+            <View style={parseStyle({ display: 'flex', flexDirection: 'column', marginBottom: '0.5rem' })}>
+                <Text style={parseStyle({ cursor: 'pointer', fontSize: 30 })}>{device.name}</Text>
                 <View
-                    style={{
+                    style={parseStyle({
                         display: 'flex',
                         flexDirection: 'row',
                         justifyContent: 'space-between',
@@ -78,7 +79,7 @@ export const DeviceView: React.FC<DeviceViewProps> = ({ appContext }) => {
                         marginTop: '0.5rem',
                         paddingLeft: '2rem',
                         paddingRight: '2rem',
-                    }}
+                    })}
                 >
                     <ConnectedStateChip isConnected={device.active} />
                     <TurnedOnStateChip
@@ -88,9 +89,6 @@ export const DeviceView: React.FC<DeviceViewProps> = ({ appContext }) => {
                     />
                 </View>
             </View>
-            <Text style={{ fontSize: '1.2rem', marginBottom: '1rem' }}>Detalle de consumo</Text>
-            <MeasuresChart appContext={appContext} deviceId={device.deviceId} />
-            <View style={{ margin: '1.5rem' }} />
             <FloatingActionButton
                 label="Programar encendido / apagado"
                 icon="calendar"
@@ -101,6 +99,8 @@ export const DeviceView: React.FC<DeviceViewProps> = ({ appContext }) => {
                     })
                 }
             />
+            <Text style={parseStyle({ fontSize: '1.2rem', marginBottom: '1rem' })}>Detalle de consumo</Text>
+            <MeasuresChart appContext={appContext} deviceId={device.deviceId} />
         </View>
     );
 };
