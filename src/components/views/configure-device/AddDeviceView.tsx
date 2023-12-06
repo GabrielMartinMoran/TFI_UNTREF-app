@@ -12,11 +12,11 @@ import { SectionTitle } from '../../ui/SectionTitle';
 import { parseStyle } from '../../../utils/styles-parser';
 import { Spacer } from '../../ui/Spacer';
 
-export type ConfigureDeviceViewProps = {
+export type AddDeviceViewProps = {
     appContext: AppContext;
 };
 
-export const ConfigureDeviceViewceView: React.FC<ConfigureDeviceViewProps> = ({ appContext }) => {
+export const AddDeviceViewceView: React.FC<AddDeviceViewProps> = ({ appContext }) => {
     const deviceConfigurationRepository = appContext.getRepository(
         DeviceConfigurationRepository
     ) as DeviceConfigurationRepository;
@@ -30,22 +30,24 @@ export const ConfigureDeviceViewceView: React.FC<ConfigureDeviceViewProps> = ({ 
     const configureDevice = async () => {
         // Generate device_id
         const deviceId = await devicesRepository.create(deviceName);
-        // Send device_id to the device
-        await deviceConfigurationRepository.setDeviceId(deviceId);
         // Generate device token
         const deviceToken = await authRepository.generateDeviceToken(deviceId);
-        // Send the token to the device
-        await deviceConfigurationRepository.setToken(deviceToken);
         // Navigate to the next stage of the configuration
-        navigateTo({ route: ROUTES.searchDeviceNetworks });
+        navigateTo({
+            route: ROUTES.searchDevices,
+            params: {
+                ':deviceId': deviceId,
+                ':deviceToken': deviceToken,
+            },
+        });
     };
 
     return (
         <View>
-            <SectionTitle text="Configurar dispositivo" />
-            <TextInput label="Nombre del dispositivo" value={deviceName} onChangeText={setDeviceName} />
+            <SectionTitle text="Agregar dispositivo" />
+            <TextInput label="Nombre del dispositivo a agregar" value={deviceName} onChangeText={setDeviceName} />
             <Spacer />
-            <Button title="Configurar" onPress={configureDevice} />
+            <Button title="Continuar" onPress={configureDevice} />
         </View>
     );
 };

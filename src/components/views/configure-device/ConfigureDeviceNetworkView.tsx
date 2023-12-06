@@ -9,6 +9,7 @@ import { SectionTitle } from '../../ui/SectionTitle';
 import { TextInput } from '../../ui/TextInput';
 import { parseStyle } from '../../../utils/styles-parser';
 import { Spacer } from '../../ui/Spacer';
+import { MessageType } from '../../../models/message-type';
 
 export type ConfigureDeviceNetworkViewProps = {
     appContext: AppContext;
@@ -25,8 +26,14 @@ export const ConfigureDeviceNetworkView: React.FC<ConfigureDeviceNetworkViewProp
 
     const saveNetwork = async () => {
         const ssid = appContext.getSharedState('selectedNetwork');
-        await deviceConfigurationRepository.configureNetwork(ssid, password);
-        navigateTo({ route: ROUTES.myDevices });
+        try {
+            await deviceConfigurationRepository.configureNetwork(ssid, password);
+            //appContext.showMessage('El dispositivo se configuro correctamente!', MessageType.SUCCESS);
+        } catch (error) {
+            console.log(error);
+            appContext.showMessage('Ha ocurrido un error al tratar de configurar el dispositivo', MessageType.ERROR);
+        }
+        navigateTo({ route: ROUTES.deviceConfigurationFinished });
     };
 
     return (
