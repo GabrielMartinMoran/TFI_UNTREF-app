@@ -104,7 +104,7 @@ export const Drawer: React.FC<DrawerProps> = ({ appContext }) => {
                                         label="Agregar dispositivo"
                                         onPress={() => {
                                             appContext.hideDrawerCallback();
-                                            navigateTo({ route: ROUTES.searchDevices });
+                                            navigateTo({ route: ROUTES.addDevice });
                                         }}
                                     />
                                     <RNPDrawer.Item

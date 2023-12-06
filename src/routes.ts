@@ -6,8 +6,9 @@ import { LogoutView } from './components/views/LogoutView';
 import { MyDevicesView } from './components/views/MyDevicesView';
 import { RegisterView } from './components/views/RegisterView ';
 import { SchedulerView } from './components/views/SchedulerView';
+import { AddDeviceViewceView } from './components/views/configure-device/AddDeviceView';
 import { ConfigureDeviceNetworkView } from './components/views/configure-device/ConfigureDeviceNetworkView';
-import { ConfigureDeviceViewceView } from './components/views/configure-device/ConfigureDeviceView';
+import { DeviceConfigurationFinishedView } from './components/views/configure-device/DeviceConfigurationFinishedView';
 import { SearchDeviceNetworkView } from './components/views/configure-device/SearchDeviceNetworkView';
 import { SearchDeviceView } from './components/views/configure-device/SearchDeviceView';
 import { CONFIG } from './config';
@@ -40,14 +41,14 @@ export const ROUTES = {
         title: 'Mis dispositivos',
     }),
     searchDevices: new Route({
-        path: '/devices/search',
+        path: '/devices/search/:deviceId/:deviceToken',
         component: SearchDeviceView,
         title: 'Buscar dispositivo',
     }),
-    configureDevice: new Route({
-        path: '/devices/configure',
-        component: ConfigureDeviceViewceView,
-        title: 'Configurar dispositivo',
+    addDevice: new Route({
+        path: '/devices/add',
+        component: AddDeviceViewceView,
+        title: 'Agregar dispositivo',
     }),
     searchDeviceNetworks: new Route({
         path: '/devices/networks',
@@ -58,6 +59,11 @@ export const ROUTES = {
         path: '/devices/network',
         component: ConfigureDeviceNetworkView,
         title: 'Configurar red',
+    }),
+    deviceConfigurationFinished: new Route({
+        path: '/devices/configuration/finished',
+        component: DeviceConfigurationFinishedView,
+        title: 'Configuración exitosa',
     }),
     device: new Route({
         path: '/devices/:deviceId',

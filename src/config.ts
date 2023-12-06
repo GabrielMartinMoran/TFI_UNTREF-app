@@ -1,6 +1,6 @@
 export const CONFIG = {
     API_URI: 'http://192.168.0.9:5000/api',
-    DEVICE_API_URI: 'http://192.168.0.9:5001/api',
+    DEVICE_API_URI: 'http://192.168.4.1:80/api', //'http://192.168.0.9:5001/api'
     TIME_RANGES: {
         '5_MINUTES': {
             minutes: 5,

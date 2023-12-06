@@ -10,6 +10,7 @@ import { Spacer } from '../../ui/Spacer';
 import { ActivityIndicator } from 'react-native-paper';
 import { PALLETE } from '../../../pallete';
 import { parseStyle } from '../../../utils/styles-parser';
+import { useParams } from 'react-router-native';
 
 export type SearchDeviceViewProps = {
     appContext: AppContext;
@@ -24,6 +25,8 @@ export const SearchDeviceView: React.FC<SearchDeviceViewProps> = ({ appContext }
     ) as DeviceConfigurationRepository;
 
     const { navigateTo } = useAppNavigate(appContext);
+
+    const { deviceId, deviceToken } = useParams();
 
     const [isSearching, setIsSearching] = useState(false);
     const [deviceFound, setDeviceFound] = useState(false);
@@ -49,31 +52,47 @@ export const SearchDeviceView: React.FC<SearchDeviceViewProps> = ({ appContext }
     };
 
     const configureDevice = async () => {
-        const deviceId = await deviceConfigurationRepository.getDeviceId();
-        if (deviceId) {
+        const currentDeviceId = await deviceConfigurationRepository.getDeviceId();
+        if (currentDeviceId) {
             appContext.showMessage('El dispositivo ya esta configurado!', MessageType.ERROR);
             return;
         }
-        navigateTo({ route: ROUTES.configureDevice });
+        try {
+            // Send device_id to the device
+            await deviceConfigurationRepository.setDeviceId(deviceId!);
+            // Send the token to the device
+            await deviceConfigurationRepository.setToken(deviceToken!);
+            // Navigate to the next stage of the configuration
+        } catch (error) {
+            console.log(error);
+            appContext.showMessage('Ha ocurrido un error al tratar de configurar el dispositivo', MessageType.ERROR);
+        }
+
+        navigateTo({
+            route: ROUTES.searchDeviceNetworks,
+        });
     };
 
     return (
         <View
-            style={parseStyle({
-                display: 'flex',
-                height: '100%',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                textAlign: 'center',
-                margin: '2rem',
-                transform: 'translateY(-10%)',
-            },{
-                paddingTop: '3rem',
-                marginBottom: '3rem',
-                transform: 'translateY(0px)',
-                height: undefined,
-            })}
+            style={parseStyle(
+                {
+                    display: 'flex',
+                    height: '100%',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    textAlign: 'center',
+                    margin: '2rem',
+                    transform: 'translateY(-10%)',
+                },
+                {
+                    paddingTop: '3rem',
+                    marginBottom: '3rem',
+                    transform: 'translateY(0px)',
+                    height: undefined,
+                }
+            )}
         >
             {deviceFound ? (
                 <>
@@ -99,7 +118,8 @@ export const SearchDeviceView: React.FC<SearchDeviceViewProps> = ({ appContext }
                     ) : (
                         <>
                             <Text style={textStyle}>
-                                Para buscar un dispositivo, conectate a la red del mismo y luego presiona{' '}
+                                Ahora se procederá con la búsqueda del dispositivo a agregar. Por favor, conectate a la
+                                red del mismo y luego presiona{' '}
                                 <Text
                                     style={parseStyle({
                                         fontWeight: 'bold',

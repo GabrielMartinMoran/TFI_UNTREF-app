@@ -49,7 +49,7 @@ export const MyDevicesView: React.FC<MyDevicesViewProps> = ({ appContext }) => {
     }, []);
 
     const addDevice = () => {
-        navigateTo({ route: ROUTES.searchDevices });
+        navigateTo({ route: ROUTES.addDevice });
     };
 
     return (
