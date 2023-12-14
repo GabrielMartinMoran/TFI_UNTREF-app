@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, StatusBar } from 'react-native';
+import { View } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 import { AppContext } from './src/app-context';
 import { Router } from './src/components/Router';
 import { PALLETE } from './src/pallete';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
-import { isMobile } from './src/utils/platform-checker';
-import { Spacer } from './src/components/ui/Spacer';
+import { parseStyle } from './src/utils/styles-parser';
 
 export default function App() {
     const appContext = new AppContext();
@@ -23,14 +23,28 @@ export default function App() {
     return (
         <PaperProvider theme={theme}>
             <View
-                style={{
-                    backgroundColor: PALLETE.BACKGROUND,
-                    width: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                }}
+                style={parseStyle(
+                    {},
+                    {
+                        paddingTop: '3rem',
+                        backgroundColor: PALLETE.DARK_PRIMARY,
+                    }
+                )}
+            ></View>
+            <StatusBar style="light" />
+            <View
+                style={parseStyle(
+                    {
+                        backgroundColor: PALLETE.BACKGROUND,
+                        width: '100%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                    },
+                    {
+                        width: undefined,
+                    }
+                )}
             >
-                <StatusBar />
                 <Router appContext={appContext} />
             </View>
         </PaperProvider>

@@ -31,5 +31,5 @@ export const CONFIG = {
         DRAWER_WIDTH: '220px',
     },
     SNACKBAR_VISIBLE_TIME: 2000,
-    DEFAULT_LOCATION_NAME: 'Resúmen general',
+    DEFAULT_LOCATION_NAME: 'Resumen general',
 };
