@@ -17,9 +17,6 @@ export type AddDeviceViewProps = {
 };
 
 export const AddDeviceViewceView: React.FC<AddDeviceViewProps> = ({ appContext }) => {
-    const deviceConfigurationRepository = appContext.getRepository(
-        DeviceConfigurationRepository
-    ) as DeviceConfigurationRepository;
     const devicesRepository = appContext.getRepository(DevicesRepository) as DevicesRepository;
     const authRepository = appContext.getRepository(AuthRepository) as AuthRepository;
 
